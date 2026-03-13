@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ШЗА — Регламент бизнес-процессов</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f5f0e8;
+  --paper2: #ede8de;
+  --paper3: #e4ddd0;
+  --ink: #1a1612;
+  --ink2: #3d3830;
+  --ink3: #7a7268;
+  --ink4: #b0a898;
+  --rule: #c8bfb0;
+  --rule2: #ddd6c8;
+  --accent: #c0440a;      /* сталь-оранжевый */
+  --accent2: #8f3006;
+  --accent-pale: #f2e0d6;
+  --green: #2a6b3a;
+  --green-pale: #dff0e4;
+  --red: #a01c1c;
+  --red-pale: #f5e0e0;
+  --blue: #1e4a7a;
+  --blue-pale: #ddeaf5;
+  --amber: #8a5a00;
+  --amber-pale: #f5ead0;
+  --teal: #1a6060;
+  --teal-pale: #d8f0ee;
+
+  --serif: 'DM Serif Display', Georgia, serif;
+  --mono: 'JetBrains Mono', monospace;
+  --body: 'Spectral', Georgia, serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.6;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0 40px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--accent);
+}
+
+.logo {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+.logo em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.view-toggle {
+  display: flex;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.vbtn {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: rgba(255,255,255,0.45);
+  transition: all .2s;
+  border-right: 1px solid rgba(255,255,255,0.15);
+}
+.vbtn:last-child { border-right: none; }
+.vbtn.active {
+  background: var(--accent);
+  color: #fff;
+}
+.vbtn:hover:not(.active) {
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.8);
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  padding: 48px 40px 32px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.masthead-left {}
+.masthead-eyebrow {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.masthead-title {
+  font-family: var(--serif);
+  font-size: 42px;
+  line-height: 1.05;
+  color: var(--ink);
+  font-weight: 400;
+}
+.masthead-title em {
+  font-style: italic;
+  color: var(--ink3);
+}
+.masthead-meta {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink4);
+  letter-spacing: 0.08em;
+  line-height: 1.9;
+  text-align: right;
+  border-left: 2px solid var(--rule);
+  padding-left: 20px;
+}
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; animation: reveal .3s ease; }
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ═══════════════════ STEP VIEW ═══════════════════ */
+.step-view { max-width: 860px; margin: 0 auto; padding: 40px 40px 60px; }
+
+/* Scenario tabs — horizontal rule style */
+.sc-nav {
+  display: flex;
+  gap: 0;
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--rule);
+  overflow-x: auto;
+}
+.sc-btn {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 16px 9px;
+  border: none;
+  background: transparent;
+  color: var(--ink4);
+  cursor: pointer;
+  transition: all .18s;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.sc-btn:hover { color: var(--ink2); }
+.sc-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Scenario panel */
+.sc-panel { display: none; }
+.sc-panel.active { display: block; }
+
+/* Scenario header */
+.sc-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.sc-num {
+  font-family: var(--serif);
+  font-size: 64px;
+  line-height: 1;
+  color: var(--rule);
+  font-weight: 400;
+  flex-shrink: 0;
+}
+.sc-titlewrap {}
+.sc-title {
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.15;
+  color: var(--ink);
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+.sc-logic {
+  font-size: 13px;
+  color: var(--ink3);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* Progress */
+.sc-progress {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+.sc-progress-seg {
+  height: 3px;
+  flex: 1;
+  background: var(--rule2);
+  transition: background .3s;
+}
+.sc-progress-seg.done { background: var(--green); }
+.sc-progress-seg.active { background: var(--accent); }
+
+/* Steps — editorial timeline */
+.steps { display: flex; flex-direction: column; }
+
+.step-row {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 0;
+  cursor: pointer;
+}
+
+.step-gutter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.step-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink4);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.step-row.active .step-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.step-row.done .step-num {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.step-spine-line {
+  width: 1px;
+  flex: 1;
+  min-height: 8px;
+  background: var(--rule2);
+}
+
+.step-content {
+  padding: 2px 0 20px 20px;
+  border-left: 1px solid var(--rule2);
+  margin-left: -1px; /* aligns with spine */
+}
+
+.step-hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0;
+  padding-bottom: 8px;
+}
+
+.step-title {
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink3);
+  transition: color .2s;
+}
+.step-row.active .step-title,
+.step-row.done .step-title {
+  color: var(--ink);
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  text-transform: uppercase;
+}
+.tag-block { background: var(--red-pale); color: var(--red); }
+.tag-ok { background: var(--green-pale); color: var(--green); }
+.tag-warn { background: var(--amber-pale); color: var(--amber); }
+.tag-info { background: var(--blue-pale); color: var(--blue); }
+.tag-teal { background: var(--teal-pale); color: var(--teal); }
+
+.step-detail { display: none; }
+.step-row.active .step-detail { display: block; }
+
+.step-what {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.7;
+  margin-bottom: 12px;
+  font-family: var(--body);
+}
+
+.step-why {
+  border-left: 2px solid var(--accent);
+  padding: 8px 14px;
+  background: var(--accent-pale);
+  margin-bottom: 12px;
+}
+.step-why-lbl {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 4px;
+}
+.step-why-txt {
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.65;
+  font-style: italic;
+}
+
+.actors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.actor {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 3px 10px;
+  border: 1px solid var(--rule);
+  color: var(--ink3);
+  letter-spacing: 0.04em;
+  background: var(--paper2);
+}
+
+/* Step nav buttons */
+.step-nav {
+  display: flex;
+  gap: 0;
+  margin-top: 24px;
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+}
+.snav-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink3);
+  cursor: pointer;
+  transition: all .18s;
+  margin-right: -1px;
+}
+.snav-btn:hover { background: var(--paper2); color: var(--ink); }
+.snav-btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.snav-btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+
+
+/* ═══════════════════ BPMN VIEW ═══════════════════ */
+.bpmn-view { padding: 32px 40px 60px; }
+
+.bpmn-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+.bpmn-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.bpmn-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink3);
+  letter-spacing: 0.04em;
+}
+.leg-dot {
+  width: 10px; height: 10px;
+  border: 1.5px solid currentColor;
+  flex-shrink: 0;
+}
+
+.bpmn-scroll { overflow-x: auto; }
+.bpmn-scroll::-webkit-scrollbar { height: 4px; }
+.bpmn-scroll::-webkit-scrollbar-track { background: var(--paper2); }
+.bpmn-scroll::-webkit-scrollbar-thumb { background: var(--rule); }
+
+svg.bpmn { min-width: 1320px; font-family: var(--body); }
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 3px solid var(--ink);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-l {
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--ink3);
+  font-style: italic;
+}
+.footer-r {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink4);
+  letter-spacing: 0.1em;
+  text-align: right;
+  line-height: 1.8;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">ШЗА <em>/</em> Регламент процессов <em>/</em> 1С:ERP</div>
+  <div class="view-toggle">
+    <button class="vbtn active" onclick="switchView('step')">Пошагово</button>
+    <button class="vbtn" onclick="switchView('bpmn')">Блок-схема</button>
+  </div>
+</div>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-left">
+    <div class="masthead-eyebrow">Внутренний регламент · Версия 1.0 · 2025</div>
+    <div class="masthead-title">Бизнес-процессы<br><em>производственного предприятия</em></div>
+  </div>
+  <div class="masthead-meta">
+    Система: 1С:ERP Управление предприятием<br>
+    Сценариев: 7 · Шагов: 33<br>
+    Барьеров: MDM-шлюз, ОТК, Сдельщина<br>
+    Исполнитель: ШЗА<br>
+    Партнёр: АО «ШЗГ» (переработка)
+  </div>
+</div>
+
+
+<!-- ═══════════ STEP VIEW ═══════════ -->
+<div class="view active" id="view-step">
+<div class="step-view">
+
+  <div class="sc-nav" id="sc-nav">
+    <button class="sc-btn active" onclick="switchSc(0)">СЦ-1 · Просчёт КП</button>
+    <button class="sc-btn" onclick="switchSc(1)">СЦ-2 · Производство</button>
+    <button class="sc-btn" onclick="switchSc(2)">СЦ-2.1 · Кооперация</button>
+    <button class="sc-btn" onclick="switchSc(3)">СЦ-3 · Перепродажа</button>
+    <button class="sc-btn" onclick="switchSc(4)">СЦ-3.1 · Брак</button>
+    <button class="sc-btn" onclick="switchSc(5)">СЦ-4 · Склад MTS</button>
+    <button class="sc-btn" onclick="switchSc(6)">СЦ-5 · Бизнес-сеть</button>
+  </div>
+
+  <!-- ─── СЦ-1 ─── -->
+  <div class="sc-panel active" id="sp0">
+    <div class="sc-header">
+      <div class="sc-num">01</div>
+      <div class="sc-titlewrap">
+        <div class="sc-title">Просчёт КП — от запроса до запуска в цех</div>
+        <div class="sc-logic">Отдел продаж хочет считать цены мгновенно, производство требует выверенных чертежей. Разделяем «Оценку» и «Исполнение».</div>
+      </div>
+    </div>
+    <div class="sc-progress" id="prog0"></div>
+    <div class="steps" id="sl0">
+
+      <div class="step-row active" onclick="setStep(0,0)">
+        <div class="step-gutter"><div class="step-num">01</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Изолятор пресейла</span><span class="tag tag-warn">Не согласован</span></div>
+          <div class="step-detail">
+            <div class="step-what">Менеджер создаёт «Заказ клиента» с признаком «Кандидат / Разовый запрос». Номенклатура заводится быстро, без жёсткого контроля — но программно заблокирована для закупщиков и кладовщиков.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Менеджеры создают хоть 200 запросов в день — система технически не даст цеху начать производство, а снабженцу купить металл.</div></div>
+            <div class="actors"><span class="actor">Менеджер ОП</span><span class="actor">Заказ клиента</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-row" onclick="setStep(0,1)">
+        <div class="step-gutter"><div class="step-num">02</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Параметризация технологии</span><span class="tag tag-info">В разработке</span></div>
+          <div class="step-detail">
+            <div class="step-what">Технолог Зубачев создаёт «Ресурсную спецификацию» с формулами авторасчёта: V = π × r² × h × ρ стали. Полный техпроцесс пока не нужен.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Менеджер вбивает габариты детали — система сама высчитывает потребность в металле и станко-часах. Технолог не тратит время на калькулятор.</div></div>
+            <div class="actors"><span class="actor">Зубачев Р.С.</span><span class="actor">Ресурсная спецификация</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-row" onclick="setStep(0,2)">
+        <div class="step-gutter"><div class="step-num">03</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Плановая калькуляция</span><span class="tag tag-ok">→ КП клиенту</span></div>
+          <div class="step-detail">
+            <div class="step-what">Одна кнопка — система собирает полную плановую себестоимость: текущие цены на металл из прайсов поставщиков + нормо-часы станков + накладные расходы цеха.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Менеджер видит объективную цифру (например, 1 200 ₽), накидывает рентабельность 30% и отправляет КП. Исключается риск продажи в убыток.</div></div>
+            <div class="actors"><span class="actor">Менеджер ОП</span><span class="actor">Плановая калькуляция</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-row" onclick="setStep(0,3)">
+        <div class="step-gutter"><div class="step-num">04</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">MDM-шлюз · Директива №04</span><span class="tag tag-block">⛔ Жёсткий барьер</span></div>
+          <div class="step-detail">
+            <div class="step-what">Клиент согласен. Менеджер переводит заказ в «К выполнению» — системный триггер. ОНТД присваивает ГОСТ-артикул. Зубачев выверяет спецификацию до статуса «Действует».</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Пока спецификация не «Действует» — программа физически блокирует производственные документы. Грязные данные не пройдут в цех.</div></div>
+            <div class="actors"><span class="actor">Менеджер ОП</span><span class="actor">ОНТД</span><span class="actor">Зубачев Р.С.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-row" onclick="setStep(0,4)">
+        <div class="step-gutter"><div class="step-num">05</div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Заказ на производство</span><span class="tag tag-ok">✓ Цех запущен</span></div>
+          <div class="step-detail">
+            <div class="step-what">Только после статуса «Действует» — Главный диспетчер ПДО создаёт «Заказ на производство» со статусом «К производству».</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">В цех попадает только 100% оплаченная деталь с идеально выверенной технологией, свободной от ошибок пресейла.</div></div>
+            <div class="actors"><span class="actor">Иванов М.С. (ПДО)</span><span class="actor">Заказ на производство</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="step-nav">
+      <button class="snav-btn" onclick="prevStep(0)">← Назад</button>
+      <button class="snav-btn snav-btn-primary" onclick="nextStep(0)">Следующий шаг →</button>
+    </div>
+  </div>
+
+  <!-- ─── СЦ-2 ─── -->
+  <div class="sc-panel" id="sp1">
+    <div class="sc-header">
+      <div class="sc-num">02</div>
+      <div class="sc-titlewrap">
+        <div class="sc-title">Основной производственный конвейер ШЗА</div>
+        <div class="sc-logic">Производство работает ритмично без бумажных служебок. Каждый шаг физически невозможен без правильного выполнения предыдущего.</div>
+      </div>
+    </div>
+    <div class="sc-progress" id="prog1"></div>
+    <div class="steps" id="sl1">
+      <div class="step-row active" onclick="setStep(1,0)">
+        <div class="step-gutter"><div class="step-num">01</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Коммерческий старт + MDM-шлюз</span><span class="tag tag-block">⛔ Барьер данных</span></div>
+          <div class="step-detail">
+            <div class="step-what">Сережин М.Ю. переводит «Заказ клиента» из «Не согласован» в «К выполнению». ОНТД присваивает ГОСТ-артикул. Зубачев переводит спецификацию в «Действует».</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Пока статус спецификации не «Действует» — программа блокирует создание производственных документов. Цех защищён от грязных данных и ошибок нормирования.</div></div>
+            <div class="actors"><span class="actor">Сережин М.Ю.</span><span class="actor">ОНТД</span><span class="actor">Зубачев Р.С.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(1,1)">
+        <div class="step-gutter"><div class="step-num">02</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Межцеховая диспетчеризация</span><span class="tag tag-info">АРМ: Очередь заказов</span></div>
+          <div class="step-detail">
+            <div class="step-what">Иванов М.С. формирует «Заказы на производство» и нажимает «Планировать график». Система разбивает заказ на «Этапы производства» и оценивает доступность 6 станков ВРЦ и наличие металла на складе.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">ПДО не рисует графики в Excel. Для термической обработки система автоматически сгенерирует «Заказ переработчику» на АО «ШЗГ» по давальческой схеме.</div></div>
+            <div class="actors"><span class="actor">Иванов М.С. (ПДО)</span><span class="actor">Этапы производства</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(1,2)">
+        <div class="step-gutter"><div class="step-num">03</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Внутрицеховой диктат</span><span class="tag tag-block">💰 Сдельщина = отметки в ERP</span></div>
+          <div class="step-detail">
+            <div class="step-what">Станочник видит «Этап производства» на планшете, выполняет операцию и нажимает «Завершить». Система мгновенно списывает металл из кладовой и фиксирует «Выработку сотрудников».</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Жёсткий стоп-кран: нет отметки рабочего о завершении Этапа в ERP = нет сдельной зарплаты. Мотивация встроена в процесс.</div></div>
+            <div class="actors"><span class="actor">Станочник</span><span class="actor">Планшет</span><span class="actor">Выработка сотрудников</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(1,3)">
+        <div class="step-gutter"><div class="step-num">04</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Барьер ОТК</span><span class="tag tag-block">⛔ Блокировка выпуска</span></div>
+          <div class="step-detail">
+            <div class="step-what">Этап «Контроль ОТК» — последний в маршруте каждой детали. Деталь автоматически падает в АРМ Ковшиковой А.Л. Брак изолируется мгновенно на уровне операций.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Пока Ковшиков не переведёт Этап ОТК в «Завершён» — система блокирует выпуск продукции. На склад попадают только 100% годные изделия.</div></div>
+            <div class="actors"><span class="actor">Ковшикова А.Л.</span><span class="actor">Этап ОТК</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(1,4)">
+        <div class="step-gutter"><div class="step-num">05</div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Отгрузка + Закрытие месяца</span><span class="tag tag-ok">📊 Кристальная маржа</span></div>
+          <div class="step-detail">
+            <div class="step-what">Сережин формирует «Реализацию». Рогожкина Н. запускает закрытие месяца — система собирает прямые затраты и распределяет косвенные по аналитике «Направление деятельности».</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Учредители открывают «Валовая прибыль предприятия» и видят маржу до копейки именно по этому заказу. Никакого ручного сведения факта.</div></div>
+            <div class="actors"><span class="actor">Сережин М.Ю.</span><span class="actor">Рогожкина Н.</span><span class="actor">Реализация</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="snav-btn" onclick="prevStep(1)">← Назад</button>
+      <button class="snav-btn snav-btn-primary" onclick="nextStep(1)">Следующий шаг →</button>
+    </div>
+  </div>
+
+  <!-- ─── СЦ-2.1 ─── -->
+  <div class="sc-panel" id="sp2">
+    <div class="sc-header">
+      <div class="sc-num">2.1</div>
+      <div class="sc-titlewrap">
+        <div class="sc-title">Межцеховая кооперация — ШЗА → АО «ШЗГ»</div>
+        <div class="sc-logic">Не потерять металл в чужих цехах, защититься от чужого брака, автоматически включить стоимость услуг в себестоимость.</div>
+      </div>
+    </div>
+    <div class="sc-progress" id="prog2"></div>
+    <div class="steps" id="sl2">
+      <div class="step-row active" onclick="setStep(2,0)">
+        <div class="step-gutter"><div class="step-num">01</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Автопотребность в услугах</span><span class="tag tag-info">В спецификации</span></div>
+          <div class="step-detail">
+            <div class="step-what">Зубачев в Ресурсной спецификации для этапа «Термичка» включает переключатель «Производство силами переработчика» с номенклатурой услуги и статьёй калькуляции.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Иванов ничего не «высматривает» в голове. Нажимает кнопку в АРМ — система сама генерирует «Заказ переработчику».</div></div>
+            <div class="actors"><span class="actor">Зубачев Р.С.</span><span class="actor">Ресурсная спецификация</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(2,1)">
+        <div class="step-gutter"><div class="step-num">02</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Передача ПФ + счёт 10.07</span><span class="tag tag-warn">Транзитный учёт</span></div>
+          <div class="step-detail">
+            <div class="step-what">Кладовщик оформляет «Передачу сырья переработчику». ПФ уезжает на ШЗГ, списывается с кладовой и переходит на сч. 10.07 «Материалы, переданные в переработку на сторону».</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Металл остаётся активом контракта ГОЗ. Через отчёты видно: актив физически на территории партнёра — он не исчезает из баланса.</div></div>
+            <div class="actors"><span class="actor">Кладовщик</span><span class="actor">Передача сырья</span><span class="actor">Счёт 10.07</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(2,2)">
+        <div class="step-gutter"><div class="step-num">03</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Входной контроль при возврате</span><span class="tag tag-block">⛔ Карантин</span></div>
+          <div class="step-detail">
+            <div class="step-what">Детали вернулись с термички. Склад оформляет «Поступление от переработчика». Металл падает в зону карантина со статусом «Требуется проверка».</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Если ШЗГ запорол партию — Ковшиков ставит «Не годен», система изолирует брак, снабженец выставляет претензию. Мы не платим соседям за испорченные детали.</div></div>
+            <div class="actors"><span class="actor">Ковшиков А.Л.</span><span class="actor">Поступление от переработчика</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(2,3)">
+        <div class="step-gutter"><div class="step-num">04</div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Отчёт переработчика + утяжеление себестоимости</span><span class="tag tag-ok">✓ Полная цепочка</span></div>
+          <div class="step-detail">
+            <div class="step-what">После успешного ОТК Рогожкина оформляет «Отчёт переработчика»: система берёт себестоимость ПФ до термички + стоимость услуг ШЗГ = новая себестоимость готовой детали.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Итоговая цифра автоматически ложится на конкретный коммерческий контракт через Направление деятельности. Никакого ручного разнесения затрат.</div></div>
+            <div class="actors"><span class="actor">Рогожкина Н.</span><span class="actor">Отчёт переработчика</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="snav-btn" onclick="prevStep(2)">← Назад</button>
+      <button class="snav-btn snav-btn-primary" onclick="nextStep(2)">Следующий шаг →</button>
+    </div>
+  </div>
+
+  <!-- ─── СЦ-3 ─── -->
+  <div class="sc-panel" id="sp3">
+    <div class="sc-header">
+      <div class="sc-num">03</div>
+      <div class="sc-titlewrap">
+        <div class="sc-title">Перепродажа покупных изделий — трейдинг с барьером ОТК</div>
+        <div class="sc-logic">ШЗА выступает как торговый дом. Производственные цеха исключены полностью. Цель — купить под клиента, провести через карантин, зафиксировать прибыль.</div>
+      </div>
+    </div>
+    <div class="sc-progress" id="prog3"></div>
+    <div class="steps" id="sl3">
+      <div class="step-row active" onclick="setStep(3,0)">
+        <div class="step-gutter"><div class="step-num">01</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Тип номенклатуры «Товар»</span><span class="tag tag-info">MDM: Без производства</span></div>
+          <div class="step-detail">
+            <div class="step-what">В MDM для метизов устанавливается тип «Товар». Менеджер оформляет «Заказ клиента», Романченко генерирует «Заказ поставщику».</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Система понимает: производить на станках не нужно. Закупка жёстко маркируется под конкретный заказ — метизы не растворяются в общей массе.</div></div>
+            <div class="actors"><span class="actor">Сережин М.Ю.</span><span class="actor">Романченко</span><span class="actor">Заказ поставщику</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(3,1)">
+        <div class="step-gutter"><div class="step-num">02</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Приёмка в карантин (ордерная схема)</span><span class="tag tag-warn">Физика ≠ Финансы</span></div>
+          <div class="step-detail">
+            <div class="step-what">Кладовщик без доступа к ценам создаёт только «Приходный ордер на товары». Товар лежит на складе физически, но в финансовом учёте он ещё не наш.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Разрыв во времени между физическим поступлением и переходом права собственности. Партия блокируется в зоне входного контроля в статусе ожидания.</div></div>
+            <div class="actors"><span class="actor">Кладовщик</span><span class="actor">Приходный ордер</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(3,2)">
+        <div class="step-gutter"><div class="step-num">03</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Входной контроль ОТК</span><span class="tag tag-block">⛔ Брак не входит в баланс</span></div>
+          <div class="step-detail">
+            <div class="step-what">Ковшиков проверяет метизы. Если годны — проводится «Приобретение товаров и услуг». Если брак — финансового документа нет, запускается Сценарий 3.1.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Ни одна бракованная деталь не попадёт на баланс предприятия. Рекламация запускается автоматически.</div></div>
+            <div class="actors"><span class="actor">Ковшиков А.Л.</span><span class="actor">Приобретение ТиУ</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(3,3)">
+        <div class="step-gutter"><div class="step-num">04</div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Отгрузка + Фиксация прибыли</span><span class="tag tag-ok">📊 Чистая маржа</span></div>
+          <div class="step-detail">
+            <div class="step-what">Сережин формирует «Реализацию», кладовщик — «Расходный ордер». При закрытии месяца система берёт себестоимость партии и вычитает из суммы реализации.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">В отчёте «Валовая прибыль» по данному направлению учредители видят кристально чистую маржу от перепродажи без ручных расчётов.</div></div>
+            <div class="actors"><span class="actor">Сережин М.Ю.</span><span class="actor">Рогожкина Н.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="snav-btn" onclick="prevStep(3)">← Назад</button>
+      <button class="snav-btn snav-btn-primary" onclick="nextStep(3)">Следующий шаг →</button>
+    </div>
+  </div>
+
+  <!-- ─── СЦ-3.1 ─── -->
+  <div class="sc-panel" id="sp4">
+    <div class="sc-header">
+      <div class="sc-num">3.1</div>
+      <div class="sc-titlewrap">
+        <div class="sc-title">Работа с браком поставщика — быстрый возврат и допоставка</div>
+        <div class="sc-logic">Брак отсекается на входе. Поставщик не берётся на финансовый баланс. Заказ остаётся открытым до получения качественного товара.</div>
+      </div>
+    </div>
+    <div class="sc-progress" id="prog4"></div>
+    <div class="steps" id="sl4">
+      <div class="step-row active" onclick="setStep(4,0)">
+        <div class="step-gutter"><div class="step-num">01</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Отсечение брака на входном контроле</span><span class="tag tag-block">⛔ Брак не в балансе</span></div>
+          <div class="step-detail">
+            <div class="step-what">Кладовщик принимает только количественно (Приходный ордер). Ковшиков находит брак. Финансовый документ «Приобретение» на бракованную партию не проводится.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Не засоряем регламентированный учёт. Нет финансового приёма — нет сложных документов возврата и корректировки долга.</div></div>
+            <div class="actors"><span class="actor">Ковшиков А.Л.</span><span class="actor">Кладовщик</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(4,1)">
+        <div class="step-gutter"><div class="step-num">02</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Акт о расхождениях</span><span class="tag tag-warn">Заказ остаётся открытым</span></div>
+          <div class="step-detail">
+            <div class="step-what">Романченко создаёт «Акт о расхождениях». Для брака — статус «Оформить и ожидать допоставку». Оплата только за прошедшую ОТК часть.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Системный тумблер: 1) платим только за годные; 2) заказ не закрывается — система сигнализирует о дефиците, поставщик ещё должен N деталей.</div></div>
+            <div class="actors"><span class="actor">Романченко</span><span class="actor">Акт о расхождениях</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(4,2)">
+        <div class="step-gutter"><div class="step-num">03</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Физический возврат за ворота</span><span class="tag tag-ok">🚛 Склад чист</span></div>
+          <div class="step-detail">
+            <div class="step-what">Бракованные метизы уходят водителю с распечатанным Актом (ТОРГ-2). В 1С:ERP никаких дополнительных документов списания не создаётся.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Не тратим часы персонала на оформление макулатуры. Товар просто не прошёл входной фильтр и уехал переделываться за счёт поставщика.</div></div>
+            <div class="actors"><span class="actor">Кладовщик</span><span class="actor">ТОРГ-2</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(4,3)">
+        <div class="step-gutter"><div class="step-num">04</div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Приёмка качественной допоставки</span><span class="tag tag-ok">✓ Цепочка закрыта</span></div>
+          <div class="step-detail">
+            <div class="step-what">Поставщик привёз переделанную деталь. Кладовщик — новый Приходный ордер в рамках того же незакрытого «Заказа поставщику». Ковшиков — годна. Финансовое приобретение закрывает цепочку.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Цепочка закрывается идеально ровно: долгов нет, себестоимость не искажена, регламентированный учёт чист.</div></div>
+            <div class="actors"><span class="actor">Ковшиков А.Л.</span><span class="actor">Рогожкина Н.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="snav-btn" onclick="prevStep(4)">← Назад</button>
+      <button class="snav-btn snav-btn-primary" onclick="nextStep(4)">Следующий шаг →</button>
+    </div>
+  </div>
+
+  <!-- ─── СЦ-4 ─── -->
+  <div class="sc-panel" id="sp5">
+    <div class="sc-header">
+      <div class="sc-num">04</div>
+      <div class="sc-titlewrap">
+        <div class="sc-title">Производство на склад — Make-to-Stock по директиве руководства</div>
+        <div class="sc-logic">Производство работает без привязки к клиенту. Система защищает от перепроизводства. Склад готовой продукции — живой актив для любого покупателя.</div>
+      </div>
+    </div>
+    <div class="sc-progress" id="prog5"></div>
+    <div class="steps" id="sl5">
+      <div class="step-row active" onclick="setStep(5,0)">
+        <div class="step-gutter"><div class="step-num">01</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Оцифровка воли руководства</span><span class="tag tag-info">План производства</span></div>
+          <div class="step-detail">
+            <div class="step-what">ПЭО (Рогожкина) создаёт «План производства» на месяц. Система учитывает свободные остатки на СГП. Директор сказал 1000 — на складе 200 — программа предлагает произвести 800.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Слова руководства превращаются в системный закон для завода. Защита от перепроизводства встроена автоматически.</div></div>
+            <div class="actors"><span class="actor">Рогожкина Н. (ПЭО)</span><span class="actor">План производства</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(5,1)">
+        <div class="step-gutter"><div class="step-num">02</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Автоматическая генерация заказов в цех</span><span class="tag tag-info">Один клик</span></div>
+          <div class="step-detail">
+            <div class="step-what">Иванов М.С. открывает АРМ «Формирование заказов по планам» и в один клик генерирует «Заказы на производство» в свободный остаток.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Диспетчеризация без участия Отдела продаж и без привязки к клиенту. Опирается на спецификации Зубачева для расчёта загрузки станков и потребности в металле.</div></div>
+            <div class="actors"><span class="actor">Иванов М.С. (ПДО)</span><span class="actor">Заказы на производство</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(5,2)">
+        <div class="step-gutter"><div class="step-num">03</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Расчёт дефицита и закупка сырья</span><span class="tag tag-warn">Дефицит → Заказ</span></div>
+          <div class="step-detail">
+            <div class="step-what">Романченко запускает АРМ «Формирование заказов по потребностям». Система видит дефицит под производственные заказы и автоматически формирует «Заказы поставщикам».</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Романченко покупает металл строго под утверждённый директорами объём, а не «про запас». Металл проходит Входной контроль Ковшикова.</div></div>
+            <div class="actors"><span class="actor">Романченко</span><span class="actor">Ковшиков А.Л.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(5,3)">
+        <div class="step-gutter"><div class="step-num">04</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Выпуск в свободный остаток + ОТК</span><span class="tag tag-ok">📦 Актив СГП</span></div>
+          <div class="step-detail">
+            <div class="step-what">Стандартный конвейер. После ОТК — «Передача продукции на склад из кладовой». Метизы на СГП как свободный актив, не зарезервированный ни под одного контрагента.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Списание металла и начисление сдельщины происходит автоматически. Готовый товар доступен любому менеджеру для продажи.</div></div>
+            <div class="actors"><span class="actor">Станочник</span><span class="actor">Ковшиков А.Л.</span><span class="actor">Передача продукции</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(5,4)">
+        <div class="step-gutter"><div class="step-num">05</div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Реализация со склада</span><span class="tag tag-ok">💰 Запасы → Деньги</span></div>
+          <div class="step-detail">
+            <div class="step-what">Сережин находит покупателя, формирует «Заказ клиента» — «Отгрузить» или «Резервировать». Склад получает «Расходный ордер» без ожидания производства.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">При закрытии месяца ПЭО распределит накладные, и в отчёте покажется себестоимость деталей, произведённых по директиве учредителей.</div></div>
+            <div class="actors"><span class="actor">Сережин М.Ю.</span><span class="actor">Кладовщик</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="snav-btn" onclick="prevStep(5)">← Назад</button>
+      <button class="snav-btn snav-btn-primary" onclick="nextStep(5)">Следующий шаг →</button>
+    </div>
+  </div>
+
+  <!-- ─── СЦ-5 ─── -->
+  <div class="sc-panel" id="sp6">
+    <div class="sc-header">
+      <div class="sc-num">05</div>
+      <div class="sc-titlewrap">
+        <div class="sc-title">Оптовые продажи — 1С:Бизнес-сеть, B2B-маркетплейс</div>
+        <div class="sc-logic">Свободные остатки не должны лежать мёртвым грузом. Выводим продукцию на федеральный уровень без единого рубля вложений в интернет-магазин.</div>
+      </div>
+    </div>
+    <div class="sc-progress" id="prog6"></div>
+    <div class="steps" id="sl6">
+      <div class="step-row active" onclick="setStep(6,0)">
+        <div class="step-gutter"><div class="step-num">01</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Активация B2B-маркетплейса</span><span class="tag tag-ok">Бесплатно</span></div>
+          <div class="step-detail">
+            <div class="step-what">В разделе администрирования включаем облачный сервис «1С:Бизнес-сеть». Сервис полностью бесплатен для поставщиков и покупателей.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">ШЗА получает возможность публиковать торговые предложения на федеральной витрине 1С. Выход на всю страну без рубля вложений.</div></div>
+            <div class="actors"><span class="actor">Администратор</span><span class="actor">1С:Бизнес-сеть</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(6,1)">
+        <div class="step-gutter"><div class="step-num">02</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Стандартизация справочников</span><span class="tag tag-info">1С:Номенклатура</span></div>
+          <div class="step-detail">
+            <div class="step-what">Подключаем «1С:Номенклатура» (единый стандартизированный каталог) и сопоставляем наши наименования с эталонным каталогом.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Другие заводы по всей стране легко находят наши метизы в поиске маркетплейса. Исключается проблема нестыковки артикулов.</div></div>
+            <div class="actors"><span class="actor">1С:Номенклатура</span><span class="actor">Каталог ШЗА</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(6,2)">
+        <div class="step-gutter"><div class="step-num">03</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Публикация прайс-листов</span><span class="tag tag-info">Публично / Закрыто</span></div>
+          <div class="step-detail">
+            <div class="step-what">Сережин формирует и публикует «Торговые предложения»: актуальные цены, объёмы свободного товара на СГП, условия поставки. Публичные или только для доверенных клиентов.</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Витрина обновляется непрерывно. Актуальная информация о товаре доступна покупателям по всей стране в режиме реального времени.</div></div>
+            <div class="actors"><span class="actor">Сережин М.Ю.</span><span class="actor">Торговые предложения</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(6,3)">
+        <div class="step-gutter"><div class="step-num">04</div><div class="step-spine-line"></div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Автоматический захват лидов</span><span class="tag tag-ok">⚡ Без ручного ввода</span></div>
+          <div class="step-detail">
+            <div class="step-what">Покупатель в своей базе 1С нажимает кнопку заказа — в нашей ERP автоматически создаётся «Запрос коммерческих предложений от клиентов».</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Горячий лид фиксируется мгновенно без ручного ввода. Ни один входящий запрос не потеряется из-за человеческого фактора.</div></div>
+            <div class="actors"><span class="actor">Покупатель (1С)</span><span class="actor">Запрос КП от клиента</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-row" onclick="setStep(6,4)">
+        <div class="step-gutter"><div class="step-num">05</div></div>
+        <div class="step-content">
+          <div class="step-hdr"><span class="step-title">Конвертация запроса в сделку</span><span class="tag tag-ok">💰 Виртуальный → Деньги</span></div>
+          <div class="step-detail">
+            <div class="step-what">Менеджер формирует «Коммерческое предложение». Клиент соглашается → «Заказ клиента» → стандартный конвейер отгрузки со склада (СЦ-4, шаг 5).</div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Полная цифровая воронка: федеральная витрина → горячий лид → КП → сделка → отгрузка. Без звонков, без Excel, без потерь.</div></div>
+            <div class="actors"><span class="actor">Сережин М.Ю.</span><span class="actor">КП → Заказ клиента</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="snav-btn" onclick="prevStep(6)">← Назад</button>
+      <button class="snav-btn snav-btn-primary" onclick="nextStep(6)">Следующий шаг →</button>
+    </div>
+  </div>
+
+</div><!-- /step-view -->
+</div><!-- /view-step -->
+
+
+<!-- ═══════════════════════════════════════ BPMN VIEW ═══════════════════════════════════════ -->
+<div class="view" id="view-bpmn">
+<div class="bpmn-view">
+  <div class="bpmn-topbar">
+    <div class="bpmn-label">BPMN · Бизнес-процессы ШЗА · 1С:ERP · Все сценарии</div>
+    <div class="bpmn-legend">
+      <div class="leg-item" style="color:#1e4a7a"><div class="leg-dot"></div>Отдел продаж</div>
+      <div class="leg-item" style="color:#2a6b3a"><div class="leg-dot"></div>Производство / ПДО</div>
+      <div class="leg-item" style="color:#8a5a00"><div class="leg-dot"></div>ОТК / Снабжение</div>
+      <div class="leg-item" style="color:#6b2a6b"><div class="leg-dot"></div>Финансы / ПЭО</div>
+      <div class="leg-item" style="color:#a01c1c"><div class="leg-dot"></div>MDM-шлюз / Барьер</div>
+      <div class="leg-item" style="color:#1a6060"><div class="leg-dot"></div>Внешний контрагент</div>
+    </div>
+  </div>
+
+  <div class="bpmn-scroll">
+<svg class="bpmn" viewBox="0 0 1320 1780" xmlns="http://www.w3.org/2000/svg" style="background:#f5f0e8">
+<defs>
+  <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M1 2L8 5L1 8" fill="none" stroke="#b0a898" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M1 2L8 5L1 8" fill="none" stroke="#1e4a7a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M1 2L8 5L1 8" fill="none" stroke="#2a6b3a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M1 2L8 5L1 8" fill="none" stroke="#a01c1c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M1 2L8 5L1 8" fill="none" stroke="#8a5a00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M1 2L8 5L1 8" fill="none" stroke="#6b2a6b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M1 2L8 5L1 8" fill="none" stroke="#1a6060" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ── SWIMLANE HEADERS ── -->
+<rect x="0" y="0" width="1320" height="52" fill="#1a1612"/>
+<text x="16" y="30" font-family="'JetBrains Mono',monospace" font-size="10" fill="#c0440a" font-weight="700" letter-spacing="0.15em">ОТДЕЛ ПРОДАЖ</text>
+<rect x="0" y="52" width="1320" height="52" fill="#f0e8de"/>
+<text x="16" y="82" font-family="'JetBrains Mono',monospace" font-size="10" fill="#a01c1c" font-weight="700" letter-spacing="0.15em">MDM / ОНТД / ТЕХНОЛОГ</text>
+<rect x="0" y="104" width="1320" height="52" fill="#eaf0e8"/>
+<text x="16" y="134" font-family="'JetBrains Mono',monospace" font-size="10" fill="#2a6b3a" font-weight="700" letter-spacing="0.15em">ПРОИЗВОДСТВО / ПДО</text>
+<rect x="0" y="156" width="1320" height="52" fill="#f0eede"/>
+<text x="16" y="186" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a5a00" font-weight="700" letter-spacing="0.15em">ОТК / СНАБЖЕНИЕ / СКЛАД</text>
+<rect x="0" y="208" width="1320" height="52" fill="#eee8f0"/>
+<text x="16" y="238" font-family="'JetBrains Mono',monospace" font-size="10" fill="#6b2a6b" font-weight="700" letter-spacing="0.15em">ФИНАНСЫ / ПЭО</text>
+
+<line x1="0" y1="52" x2="1320" y2="52" stroke="#c8bfb0" stroke-width="0.5"/>
+<line x1="0" y1="104" x2="1320" y2="104" stroke="#c8bfb0" stroke-width="0.5"/>
+<line x1="0" y1="156" x2="1320" y2="156" stroke="#c8bfb0" stroke-width="0.5"/>
+<line x1="0" y1="208" x2="1320" y2="208" stroke="#c8bfb0" stroke-width="0.5"/>
+<line x1="0" y1="260" x2="1320" y2="260" stroke="#1a1612" stroke-width="2"/>
+
+<!-- ═══ СЦ-1: ПРОСЧЁТ КП ═══ -->
+<text x="20" y="292" font-family="'JetBrains Mono',monospace" font-size="9" fill="#c0440a" letter-spacing="0.18em" font-weight="700">СЦ-1 · ПРОСЧЁТ КП / ЗАПУСК В ЦЕХ</text>
+
+<!-- START -->
+<circle cx="72" cy="332" r="12" fill="#1a1612" stroke="#1a1612" stroke-width="1"/>
+<text x="72" y="357" font-family="'JetBrains Mono',monospace" font-size="8" fill="#7a7268" text-anchor="middle" letter-spacing=".04em">Запрос</text>
+
+<!-- Заказ клиента -->
+<rect x="106" y="312" width="124" height="40" rx="0" fill="#ddeaf5" stroke="#1e4a7a" stroke-width="1.5"/>
+<text x="168" y="329" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">Заказ клиента</text>
+<text x="168" y="344" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4a7aaa" text-anchor="middle">Не согласован</text>
+<line x1="84" y1="332" x2="104" y2="332" stroke="#1e4a7a" stroke-width="1.5" marker-end="url(#ab)"/>
+
+<!-- Рес. спецификация -->
+<rect x="106" y="360" width="124" height="40" rx="0" fill="#f5e0e0" stroke="#a01c1c" stroke-width="1.5"/>
+<text x="168" y="377" font-family="'Spectral',serif" font-size="10" fill="#a01c1c" text-anchor="middle" font-weight="500">Рес. спецификация</text>
+<text x="168" y="392" font-family="'JetBrains Mono',monospace" font-size="8" fill="#aa4a4a" text-anchor="middle">Зубачев · формулы</text>
+<line x1="168" y1="352" x2="168" y2="358" stroke="#b0a898" stroke-width="1" marker-end="url(#a)"/>
+
+<!-- Плановая калькуляция -->
+<rect x="260" y="312" width="124" height="40" rx="0" fill="#ddeaf5" stroke="#1e4a7a" stroke-width="1.5"/>
+<text x="322" y="329" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">Плановая</text>
+<text x="322" y="342" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">калькуляция</text>
+<line x1="230" y1="332" x2="258" y2="332" stroke="#1e4a7a" stroke-width="1.5" marker-end="url(#ab)"/>
+
+<!-- Gateway КП -->
+<polygon points="416,332 434,314 452,332 434,350" fill="#fff9f0" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="434" y="336" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8a5a00" text-anchor="middle">КП</text>
+<text x="434" y="346" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8a5a00" text-anchor="middle">ОК?</text>
+<line x1="384" y1="332" x2="414" y2="332" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+<line x1="434" y1="350" x2="434" y2="370" stroke="#a01c1c" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="448" y="382" font-family="'JetBrains Mono',monospace" font-size="7" fill="#a01c1c">Отказ</text>
+
+<!-- MDM-шлюз -->
+<rect x="472" y="306" width="134" height="52" rx="0" fill="#f5e0e0" stroke="#a01c1c" stroke-width="2.5"/>
+<text x="539" y="323" font-family="'JetBrains Mono',monospace" font-size="9" fill="#a01c1c" text-anchor="middle" font-weight="700" letter-spacing=".06em">MDM-ШЛЮЗ</text>
+<text x="539" y="338" font-family="'JetBrains Mono',monospace" font-size="8" fill="#aa4a4a" text-anchor="middle">ГОСТ-артикул (ОНТД)</text>
+<text x="539" y="351" font-family="'JetBrains Mono',monospace" font-size="8" fill="#aa4a4a" text-anchor="middle">Спец. → Действует</text>
+<line x1="452" y1="332" x2="470" y2="332" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+<text x="460" y="326" font-family="'JetBrains Mono',monospace" font-size="7" fill="#2a6b3a">Да</text>
+
+<!-- Заказ на производство -->
+<rect x="636" y="312" width="130" height="40" rx="0" fill="#eaf0e8" stroke="#2a6b3a" stroke-width="2"/>
+<text x="701" y="329" font-family="'Spectral',serif" font-size="10" fill="#2a6b3a" text-anchor="middle" font-weight="500">Заказ на</text>
+<text x="701" y="342" font-family="'Spectral',serif" font-size="10" fill="#2a6b3a" text-anchor="middle" font-weight="500">производство</text>
+<line x1="606" y1="332" x2="634" y2="332" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<!-- END S1 -->
+<circle cx="840" cy="332" r="12" fill="none" stroke="#2a6b3a" stroke-width="2.5"/>
+<circle cx="840" cy="332" r="6" fill="#2a6b3a"/>
+<text x="840" y="357" font-family="'JetBrains Mono',monospace" font-size="8" fill="#2a6b3a" text-anchor="middle">Цех</text>
+<line x1="766" y1="332" x2="826" y2="332" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<!-- divider -->
+<line x1="20" y1="415" x2="1300" y2="415" stroke="#c8bfb0" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+<!-- ═══ СЦ-2: ПРОИЗВОДСТВО ═══ -->
+<text x="20" y="448" font-family="'JetBrains Mono',monospace" font-size="9" fill="#2a6b3a" letter-spacing="0.18em" font-weight="700">СЦ-2 · ОСНОВНОЙ ПРОИЗВОДСТВЕННЫЙ КОНВЕЙЕР</text>
+
+<circle cx="72" cy="490" r="12" fill="#1a1612"/>
+<text x="72" y="515" font-family="'JetBrains Mono',monospace" font-size="8" fill="#7a7268" text-anchor="middle">Заказ</text>
+
+<rect x="106" y="470" width="134" height="40" rx="0" fill="#f5e0e0" stroke="#a01c1c" stroke-width="2"/>
+<text x="173" y="487" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#a01c1c" text-anchor="middle" font-weight="700">MDM-ШЛЮЗ ⛔</text>
+<text x="173" y="503" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#aa4a4a" text-anchor="middle">К выполнению</text>
+<line x1="84" y1="490" x2="104" y2="490" stroke="#1e4a7a" stroke-width="1.5" marker-end="url(#ab)"/>
+
+<rect x="270" y="470" width="130" height="40" rx="0" fill="#eaf0e8" stroke="#2a6b3a" stroke-width="1.5"/>
+<text x="335" y="487" font-family="'Spectral',serif" font-size="10" fill="#2a6b3a" text-anchor="middle" font-weight="500">Диспетчеризация</text>
+<text x="335" y="500" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a8a5a" text-anchor="middle">Этапы · 6 станков ВРЦ</text>
+<line x1="240" y1="490" x2="268" y2="490" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<!-- ШЗГ gateway -->
+<polygon points="428,490 446,472 464,490 446,508" fill="#f0faf8" stroke="#1a6060" stroke-width="1.5"/>
+<text x="446" y="494" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#1a6060" text-anchor="middle">ШЗГ?</text>
+<line x1="400" y1="490" x2="426" y2="490" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+<line x1="446" y1="508" x2="446" y2="536" stroke="#1a6060" stroke-width="1" marker-end="url(#at)"/>
+<rect x="400" y="536" width="100" height="30" rx="0" fill="#d8f0ee" stroke="#1a6060" stroke-width="1"/>
+<text x="450" y="555" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#1a6060" text-anchor="middle">Заказ переработчику</text>
+<line x1="500" y1="551" x2="522" y2="551" stroke="#1a6060" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="522" y1="551" x2="522" y2="490" stroke="#1a6060" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="522" y1="490" x2="496" y2="490" stroke="#1a6060" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#at)"/>
+
+<line x1="464" y1="490" x2="494" y2="490" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<rect x="494" y="470" width="120" height="40" rx="0" fill="#eaf0e8" stroke="#2a6b3a" stroke-width="1.5"/>
+<text x="554" y="487" font-family="'Spectral',serif" font-size="10" fill="#2a6b3a" text-anchor="middle" font-weight="500">Этап производства</text>
+<text x="554" y="500" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a8a5a" text-anchor="middle">💰 Сдельщина = отметка</text>
+
+<rect x="644" y="470" width="110" height="40" rx="0" fill="#f0eede" stroke="#8a5a00" stroke-width="2"/>
+<text x="699" y="487" font-family="'Spectral',serif" font-size="10" fill="#8a5a00" text-anchor="middle" font-weight="500">Этап ОТК ⛔</text>
+<text x="699" y="500" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#aa7a20" text-anchor="middle">Ковшикова А.Л.</text>
+<line x1="614" y1="490" x2="642" y2="490" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<polygon points="776,490 794,472 812,490 794,508" fill="#fff9f0" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="794" y="494" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#8a5a00" text-anchor="middle">Годен?</text>
+<line x1="754" y1="490" x2="774" y2="490" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+<line x1="794" y1="508" x2="794" y2="530" stroke="#a01c1c" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="808" y="525" font-family="'JetBrains Mono',monospace" font-size="7" fill="#a01c1c">Брак</text>
+
+<rect x="832" y="470" width="116" height="40" rx="0" fill="#ddeaf5" stroke="#1e4a7a" stroke-width="1.5"/>
+<text x="890" y="487" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">Реализация</text>
+<text x="890" y="500" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a6aaa" text-anchor="middle">Сережин М.Ю.</text>
+<line x1="812" y1="490" x2="830" y2="490" stroke="#1e4a7a" stroke-width="1.5" marker-end="url(#ab)"/>
+
+<rect x="978" y="470" width="120" height="40" rx="0" fill="#eee8f0" stroke="#6b2a6b" stroke-width="1.5"/>
+<text x="1038" y="487" font-family="'Spectral',serif" font-size="10" fill="#6b2a6b" text-anchor="middle" font-weight="500">Закрытие месяца</text>
+<text x="1038" y="500" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#8a4a8a" text-anchor="middle">Рогожкина · Маржа</text>
+<line x1="948" y1="490" x2="976" y2="490" stroke="#6b2a6b" stroke-width="1.5" marker-end="url(#ap)"/>
+
+<circle cx="1168" cy="490" r="12" fill="none" stroke="#2a6b3a" stroke-width="2.5"/>
+<circle cx="1168" cy="490" r="6" fill="#2a6b3a"/>
+<line x1="1098" y1="490" x2="1154" y2="490" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<line x1="20" y1="580" x2="1300" y2="580" stroke="#c8bfb0" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+<!-- ═══ СЦ-2.1: КООПЕРАЦИЯ ═══ -->
+<text x="20" y="612" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1a6060" letter-spacing="0.18em" font-weight="700">СЦ-2.1 · МЕЖЦЕХОВАЯ КООПЕРАЦИЯ ШЗА → АО «ШЗГ»</text>
+
+<circle cx="72" cy="652" r="12" fill="#1a6060" stroke="#1a6060"/>
+<text x="72" y="677" font-family="'JetBrains Mono',monospace" font-size="8" fill="#7a7268" text-anchor="middle">Термичка</text>
+
+<rect x="106" y="632" width="130" height="40" rx="0" fill="#d8f0ee" stroke="#1a6060" stroke-width="1.5"/>
+<text x="171" y="649" font-family="'Spectral',serif" font-size="10" fill="#1a6060" text-anchor="middle" font-weight="500">Спецификация</text>
+<text x="171" y="663" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#1a7070" text-anchor="middle">Силами переработчика</text>
+<line x1="84" y1="652" x2="104" y2="652" stroke="#1a6060" stroke-width="1.5" marker-end="url(#at)"/>
+
+<rect x="266" y="632" width="120" height="40" rx="0" fill="#d8f0ee" stroke="#1a6060" stroke-width="1.5"/>
+<text x="326" y="649" font-family="'Spectral',serif" font-size="10" fill="#1a6060" text-anchor="middle" font-weight="500">Заказ переработчику</text>
+<text x="326" y="663" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#1a7070" text-anchor="middle">Иванов · Автогенерация</text>
+<line x1="236" y1="652" x2="264" y2="652" stroke="#1a6060" stroke-width="1.5" marker-end="url(#at)"/>
+
+<rect x="416" y="632" width="120" height="40" rx="0" fill="#f0eede" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="476" y="649" font-family="'Spectral',serif" font-size="10" fill="#8a5a00" text-anchor="middle" font-weight="500">Передача сырья</text>
+<text x="476" y="663" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#aa7a20" text-anchor="middle">Сч. 10.07 транзит</text>
+<line x1="386" y1="652" x2="414" y2="652" stroke="#1a6060" stroke-width="1.5" marker-end="url(#at)"/>
+
+<rect x="562" y="624" width="100" height="56" rx="0" fill="#d8f0ee" stroke="#1a6060" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="612" y="645" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#1a6060" text-anchor="middle" font-weight="700">АО «ШЗГ»</text>
+<text x="612" y="659" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#1a7070" text-anchor="middle">Термообработка</text>
+<text x="612" y="672" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#1a7070" text-anchor="middle">Шлифовка</text>
+<line x1="536" y1="652" x2="560" y2="652" stroke="#1a6060" stroke-width="1.5" marker-end="url(#at)"/>
+
+<rect x="690" y="632" width="130" height="40" rx="0" fill="#f0eede" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="755" y="649" font-family="'Spectral',serif" font-size="10" fill="#8a5a00" text-anchor="middle" font-weight="500">Поступление</text>
+<text x="755" y="663" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#aa7a20" text-anchor="middle">Карантин ⛔</text>
+<line x1="662" y1="652" x2="688" y2="652" stroke="#1a6060" stroke-width="1.5" marker-end="url(#at)"/>
+
+<polygon points="844,652 862,634 880,652 862,670" fill="#fff9f0" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="862" y="656" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#8a5a00" text-anchor="middle">Годен?</text>
+<line x1="820" y1="652" x2="842" y2="652" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+<line x1="862" y1="670" x2="862" y2="692" stroke="#a01c1c" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="876" y="688" font-family="'JetBrains Mono',monospace" font-size="7" fill="#a01c1c">Претензия</text>
+
+<rect x="900" y="632" width="130" height="40" rx="0" fill="#eee8f0" stroke="#6b2a6b" stroke-width="1.5"/>
+<text x="965" y="649" font-family="'Spectral',serif" font-size="10" fill="#6b2a6b" text-anchor="middle" font-weight="500">Отчёт переработчика</text>
+<text x="965" y="663" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#8a4a8a" text-anchor="middle">С/с + услуги ШЗГ</text>
+<line x1="880" y1="652" x2="898" y2="652" stroke="#6b2a6b" stroke-width="1.5" marker-end="url(#ap)"/>
+
+<circle cx="1108" cy="652" r="12" fill="none" stroke="#1a6060" stroke-width="2.5"/>
+<circle cx="1108" cy="652" r="6" fill="#1a6060"/>
+<line x1="1030" y1="652" x2="1094" y2="652" stroke="#1a6060" stroke-width="1.5" marker-end="url(#at)"/>
+
+<line x1="20" y1="736" x2="1300" y2="736" stroke="#c8bfb0" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+<!-- ═══ СЦ-3: ПЕРЕПРОДАЖА ═══ -->
+<text x="20" y="768" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1e4a7a" letter-spacing="0.18em" font-weight="700">СЦ-3 · ПЕРЕПРОДАЖА ПОКУПНЫХ ИЗДЕЛИЙ (ТРЕЙДИНГ)</text>
+
+<circle cx="72" cy="808" r="12" fill="#1a1612"/>
+<text x="72" y="833" font-family="'JetBrains Mono',monospace" font-size="8" fill="#7a7268" text-anchor="middle">Запрос</text>
+
+<rect x="106" y="788" width="130" height="40" rx="0" fill="#ddeaf5" stroke="#1e4a7a" stroke-width="1.5"/>
+<text x="171" y="805" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">Заказ клиента</text>
+<text x="171" y="820" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a6aaa" text-anchor="middle">Тип: Товар → Заказ поставщику</text>
+<line x1="84" y1="808" x2="104" y2="808" stroke="#1e4a7a" stroke-width="1.5" marker-end="url(#ab)"/>
+
+<rect x="266" y="788" width="116" height="40" rx="0" fill="#f0eede" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="324" y="805" font-family="'Spectral',serif" font-size="10" fill="#8a5a00" text-anchor="middle" font-weight="500">Приходный ордер</text>
+<text x="324" y="820" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#aa7a20" text-anchor="middle">Физика ≠ Финансы</text>
+<line x1="236" y1="808" x2="264" y2="808" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+
+<rect x="412" y="788" width="110" height="40" rx="0" fill="#f0eede" stroke="#8a5a00" stroke-width="2"/>
+<text x="467" y="805" font-family="'Spectral',serif" font-size="10" fill="#8a5a00" text-anchor="middle" font-weight="500">Входной ОТК</text>
+<text x="467" y="820" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#aa7a20" text-anchor="middle">⛔ брак → Сц.3.1</text>
+<line x1="382" y1="808" x2="410" y2="808" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+
+<polygon points="546,808 564,790 582,808 564,826" fill="#fff9f0" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="564" y="812" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#8a5a00" text-anchor="middle">Годен?</text>
+<line x1="522" y1="808" x2="544" y2="808" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+<line x1="564" y1="826" x2="564" y2="848" stroke="#a01c1c" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="578" y="844" font-family="'JetBrains Mono',monospace" font-size="7" fill="#a01c1c">→ СЦ-3.1</text>
+
+<rect x="602" y="788" width="110" height="40" rx="0" fill="#eee8f0" stroke="#6b2a6b" stroke-width="1.5"/>
+<text x="657" y="805" font-family="'Spectral',serif" font-size="10" fill="#6b2a6b" text-anchor="middle" font-weight="500">Приобретение</text>
+<text x="657" y="820" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#8a4a8a" text-anchor="middle">Финансовый баланс</text>
+<line x1="582" y1="808" x2="600" y2="808" stroke="#6b2a6b" stroke-width="1.5" marker-end="url(#ap)"/>
+
+<rect x="742" y="788" width="110" height="40" rx="0" fill="#ddeaf5" stroke="#1e4a7a" stroke-width="1.5"/>
+<text x="797" y="805" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">Реализация</text>
+<text x="797" y="820" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a6aaa" text-anchor="middle">Сережин М.Ю.</text>
+<line x1="712" y1="808" x2="740" y2="808" stroke="#1e4a7a" stroke-width="1.5" marker-end="url(#ab)"/>
+
+<circle cx="928" cy="808" r="12" fill="none" stroke="#2a6b3a" stroke-width="2.5"/>
+<circle cx="928" cy="808" r="6" fill="#2a6b3a"/>
+<line x1="852" y1="808" x2="914" y2="808" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<line x1="20" y1="888" x2="1300" y2="888" stroke="#c8bfb0" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+<!-- ═══ СЦ-3.1: БРАК ═══ -->
+<text x="20" y="920" font-family="'JetBrains Mono',monospace" font-size="9" fill="#a01c1c" letter-spacing="0.18em" font-weight="700">СЦ-3.1 · ВОЗВРАТ БРАКА ПОСТАВЩИКУ</text>
+
+<circle cx="72" cy="960" r="12" fill="#a01c1c"/>
+<text x="72" y="985" font-family="'JetBrains Mono',monospace" font-size="8" fill="#7a7268" text-anchor="middle">Брак выявлен</text>
+
+<rect x="106" y="940" width="126" height="40" rx="0" fill="#f5e0e0" stroke="#a01c1c" stroke-width="1.5"/>
+<text x="169" y="957" font-family="'Spectral',serif" font-size="10" fill="#a01c1c" text-anchor="middle" font-weight="500">Отсечение на ОТК</text>
+<text x="169" y="972" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#cc4a4a" text-anchor="middle">Не годен · Финансов НЕТ</text>
+<line x1="84" y1="960" x2="104" y2="960" stroke="#a01c1c" stroke-width="1.5" marker-end="url(#ar)"/>
+
+<rect x="262" y="940" width="126" height="40" rx="0" fill="#f0eede" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="325" y="957" font-family="'Spectral',serif" font-size="10" fill="#8a5a00" text-anchor="middle" font-weight="500">Акт расхождений</text>
+<text x="325" y="972" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#aa7a20" text-anchor="middle">Ожидать допоставку</text>
+<line x1="232" y1="960" x2="260" y2="960" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+
+<rect x="418" y="940" width="126" height="40" rx="0" fill="#f0eede" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="481" y="957" font-family="'Spectral',serif" font-size="10" fill="#8a5a00" text-anchor="middle" font-weight="500">Возврат за ворота</text>
+<text x="481" y="972" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#aa7a20" text-anchor="middle">ТОРГ-2 · склад чист</text>
+<line x1="388" y1="960" x2="416" y2="960" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+
+<rect x="574" y="940" width="126" height="40" rx="0" fill="#eaf0e8" stroke="#2a6b3a" stroke-width="1.5"/>
+<text x="637" y="957" font-family="'Spectral',serif" font-size="10" fill="#2a6b3a" text-anchor="middle" font-weight="500">Допоставка</text>
+<text x="637" y="972" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a8a5a" text-anchor="middle">Новый ордер · Тот же заказ</text>
+<line x1="544" y1="960" x2="572" y2="960" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+
+<circle cx="784" cy="960" r="12" fill="none" stroke="#2a6b3a" stroke-width="2.5"/>
+<circle cx="784" cy="960" r="6" fill="#2a6b3a"/>
+<line x1="700" y1="960" x2="770" y2="960" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<line x1="20" y1="1042" x2="1300" y2="1042" stroke="#c8bfb0" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+<!-- ═══ СЦ-4: MTS ═══ -->
+<text x="20" y="1075" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6b2a6b" letter-spacing="0.18em" font-weight="700">СЦ-4 · ПРОИЗВОДСТВО НА СКЛАД (MAKE-TO-STOCK)</text>
+
+<circle cx="72" cy="1116" r="12" fill="#6b2a6b"/>
+<text x="72" y="1141" font-family="'JetBrains Mono',monospace" font-size="8" fill="#7a7268" text-anchor="middle">Директива ГД</text>
+
+<rect x="106" y="1096" width="120" height="40" rx="0" fill="#eee8f0" stroke="#6b2a6b" stroke-width="1.5"/>
+<text x="166" y="1113" font-family="'Spectral',serif" font-size="10" fill="#6b2a6b" text-anchor="middle" font-weight="500">План производства</text>
+<text x="166" y="1128" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#8a4a8a" text-anchor="middle">1000 − 200 = 800</text>
+<line x1="84" y1="1116" x2="104" y2="1116" stroke="#6b2a6b" stroke-width="1.5" marker-end="url(#ap)"/>
+
+<rect x="256" y="1096" width="120" height="40" rx="0" fill="#eaf0e8" stroke="#2a6b3a" stroke-width="1.5"/>
+<text x="316" y="1113" font-family="'Spectral',serif" font-size="10" fill="#2a6b3a" text-anchor="middle" font-weight="500">Заказы МТС</text>
+<text x="316" y="1128" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a8a5a" text-anchor="middle">Иванов · 1 клик</text>
+<line x1="226" y1="1116" x2="254" y2="1116" stroke="#6b2a6b" stroke-width="1.5" marker-end="url(#ap)"/>
+
+<rect x="406" y="1096" width="120" height="40" rx="0" fill="#f0eede" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="466" y="1113" font-family="'Spectral',serif" font-size="10" fill="#8a5a00" text-anchor="middle" font-weight="500">Закупка сырья</text>
+<text x="466" y="1128" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#aa7a20" text-anchor="middle">Дефицит → Заказ</text>
+<line x1="376" y1="1116" x2="404" y2="1116" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<rect x="556" y="1096" width="120" height="40" rx="0" fill="#eaf0e8" stroke="#2a6b3a" stroke-width="1.5"/>
+<text x="616" y="1113" font-family="'Spectral',serif" font-size="10" fill="#2a6b3a" text-anchor="middle" font-weight="500">Произ-во + ОТК</text>
+<text x="616" y="1128" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a8a5a" text-anchor="middle">Этапы → Завершён</text>
+<line x1="526" y1="1116" x2="554" y2="1116" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+
+<rect x="706" y="1096" width="120" height="40" rx="0" fill="#f0eede" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="766" y="1113" font-family="'Spectral',serif" font-size="10" fill="#8a5a00" text-anchor="middle" font-weight="500">Передача на СГП</text>
+<text x="766" y="1128" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#aa7a20" text-anchor="middle">Свободный актив</text>
+<line x1="676" y1="1116" x2="704" y2="1116" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<rect x="856" y="1096" width="120" height="40" rx="0" fill="#ddeaf5" stroke="#1e4a7a" stroke-width="1.5"/>
+<text x="916" y="1113" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">Реализация</text>
+<text x="916" y="1128" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a6aaa" text-anchor="middle">Сережин · со склада</text>
+<line x1="826" y1="1116" x2="854" y2="1116" stroke="#8a5a00" stroke-width="1.5" marker-end="url(#aa)"/>
+
+<circle cx="1054" cy="1116" r="12" fill="none" stroke="#2a6b3a" stroke-width="2.5"/>
+<circle cx="1054" cy="1116" r="6" fill="#2a6b3a"/>
+<line x1="976" y1="1116" x2="1040" y2="1116" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<line x1="20" y1="1200" x2="1300" y2="1200" stroke="#c8bfb0" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+<!-- ═══ СЦ-5: БИЗНЕС-СЕТЬ ═══ -->
+<text x="20" y="1232" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1a6060" letter-spacing="0.18em" font-weight="700">СЦ-5 · ОПТОВЫЕ ПРОДАЖИ · 1С:БИЗНЕС-СЕТЬ (B2B)</text>
+
+<circle cx="72" cy="1272" r="12" fill="#1a6060"/>
+<text x="72" y="1297" font-family="'JetBrains Mono',monospace" font-size="8" fill="#7a7268" text-anchor="middle">Остаток СГП</text>
+
+<rect x="106" y="1252" width="110" height="40" rx="0" fill="#d8f0ee" stroke="#1a6060" stroke-width="1.5"/>
+<text x="161" y="1269" font-family="'Spectral',serif" font-size="10" fill="#1a6060" text-anchor="middle" font-weight="500">Активация</text>
+<text x="161" y="1284" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#1a7070" text-anchor="middle">1С:Бизнес-сеть</text>
+<line x1="84" y1="1272" x2="104" y2="1272" stroke="#1a6060" stroke-width="1.5" marker-end="url(#at)"/>
+
+<rect x="246" y="1252" width="110" height="40" rx="0" fill="#d8f0ee" stroke="#1a6060" stroke-width="1.5"/>
+<text x="301" y="1269" font-family="'Spectral',serif" font-size="10" fill="#1a6060" text-anchor="middle" font-weight="500">Номенклатура</text>
+<text x="301" y="1284" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#1a7070" text-anchor="middle">Каталог → Эталон</text>
+<line x1="216" y1="1272" x2="244" y2="1272" stroke="#1a6060" stroke-width="1.5" marker-end="url(#at)"/>
+
+<rect x="386" y="1252" width="120" height="40" rx="0" fill="#ddeaf5" stroke="#1e4a7a" stroke-width="1.5"/>
+<text x="446" y="1269" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">Торговые</text>
+<text x="446" y="1282" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">предложения</text>
+<line x1="356" y1="1272" x2="384" y2="1272" stroke="#1a6060" stroke-width="1.5" marker-end="url(#at)"/>
+
+<rect x="532" y="1244" width="100" height="56" rx="0" fill="#d8f0ee" stroke="#1a6060" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="582" y="1265" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#1a6060" text-anchor="middle" font-weight="700">Покупатель</text>
+<text x="582" y="1280" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#1a7070" text-anchor="middle">1С-клиент</text>
+<text x="582" y="1293" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#2a6b3a" text-anchor="middle">Нажимает «Заказать»</text>
+<line x1="506" y1="1272" x2="530" y2="1272" stroke="#1e4a7a" stroke-width="1.5" marker-end="url(#ab)"/>
+
+<rect x="660" y="1252" width="120" height="40" rx="0" fill="#ddeaf5" stroke="#1e4a7a" stroke-width="1.5"/>
+<text x="720" y="1269" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">Запрос КП</text>
+<text x="720" y="1284" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a6aaa" text-anchor="middle">⚡ Автосоздание</text>
+<line x1="632" y1="1272" x2="658" y2="1272" stroke="#1e4a7a" stroke-width="1.5" marker-end="url(#ab)"/>
+
+<rect x="810" y="1252" width="120" height="40" rx="0" fill="#ddeaf5" stroke="#1e4a7a" stroke-width="1.5"/>
+<text x="870" y="1269" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a" text-anchor="middle" font-weight="500">КП → Заказ</text>
+<text x="870" y="1284" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="#4a6aaa" text-anchor="middle">Согласован → Сц.4</text>
+<line x1="780" y1="1272" x2="808" y2="1272" stroke="#1e4a7a" stroke-width="1.5" marker-end="url(#ab)"/>
+
+<circle cx="1008" cy="1272" r="12" fill="none" stroke="#2a6b3a" stroke-width="2.5"/>
+<circle cx="1008" cy="1272" r="6" fill="#2a6b3a"/>
+<line x1="930" y1="1272" x2="994" y2="1272" stroke="#2a6b3a" stroke-width="1.5" marker-end="url(#ag)"/>
+
+<!-- ── СПРАВОЧНАЯ ПЛАШКА ── -->
+<rect x="20" y="1368" width="1280" height="374" fill="none" stroke="#c8bfb0" stroke-width="1"/>
+<text x="36" y="1400" font-family="'JetBrains Mono',monospace" font-size="9" fill="#7a7268" letter-spacing="0.12em" font-weight="700">РОЛИ · ДОКУМЕНТЫ · КЛЮЧЕВЫЕ ПРИНЦИПЫ</text>
+<line x1="36" y1="1410" x2="1284" y2="1410" stroke="#c8bfb0" stroke-width="0.5"/>
+
+<!-- Роли col 1 -->
+<text x="36" y="1434" font-family="'JetBrains Mono',monospace" font-size="8" fill="#c0440a" letter-spacing="0.1em">РОЛИ</text>
+<text x="36" y="1452" font-family="'Spectral',serif" font-size="10" fill="#3d3830">Сережин М.Ю. — менеджер Отдела продаж</text>
+<text x="36" y="1468" font-family="'Spectral',serif" font-size="10" fill="#3d3830">Иванов М.С. — ПДО, диспетчер</text>
+<text x="36" y="1484" font-family="'Spectral',serif" font-size="10" fill="#3d3830">Зубачев Р.С. — Главный технолог</text>
+<text x="36" y="1500" font-family="'Spectral',serif" font-size="10" fill="#3d3830">Ковшикова А.Л. — Инженер по качеству</text>
+<text x="36" y="1516" font-family="'Spectral',serif" font-size="10" fill="#3d3830">Романченко — Снабженец</text>
+<text x="36" y="1532" font-family="'Spectral',serif" font-size="10" fill="#3d3830">Рогожкина Н. — Финансы / ПЭО</text>
+<text x="36" y="1548" font-family="'Spectral',serif" font-size="10" fill="#3d3830">ОНТД — нормализация и техдокументация</text>
+<text x="36" y="1564" font-family="'Spectral',serif" font-size="10" fill="#3d3830">АО «ШЗГ» — внешний переработчик</text>
+<text x="36" y="1580" font-family="'Spectral',serif" font-size="10" fill="#3d3830">Демина Н.Н. — Директор производства</text>
+
+<!-- Документы col 2 -->
+<text x="420" y="1434" font-family="'JetBrains Mono',monospace" font-size="8" fill="#c0440a" letter-spacing="0.1em">ДОКУМЕНТЫ 1С:ERP</text>
+<text x="420" y="1452" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#3d3830">Заказ клиента · Заказ на производство</text>
+<text x="420" y="1468" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#3d3830">Ресурсная спецификация (В разработке → Действует)</text>
+<text x="420" y="1484" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#3d3830">Плановая калькуляция · Этап производства</text>
+<text x="420" y="1500" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#3d3830">Приходный / Расходный ордер на товары</text>
+<text x="420" y="1516" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#3d3830">Передача сырья переработчику · Отчёт переработчика</text>
+<text x="420" y="1532" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#3d3830">Реализация ТиУ · Выработка сотрудников</text>
+<text x="420" y="1548" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#3d3830">Акт о расхождениях (ТОРГ-2)</text>
+<text x="420" y="1564" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#3d3830">Торговые предложения (1С:Бизнес-сеть)</text>
+
+<!-- Принципы col 3 -->
+<text x="820" y="1434" font-family="'JetBrains Mono',monospace" font-size="8" fill="#c0440a" letter-spacing="0.1em">КЛЮЧЕВЫЕ ПРИНЦИПЫ</text>
+<text x="820" y="1452" font-family="'Spectral',serif" font-size="10" fill="#a01c1c">⛔  MDM-шлюз: без ГОСТ-артикула и статуса «Действует»</text>
+<text x="820" y="1466" font-family="'Spectral',serif" font-size="10" fill="#a01c1c">     у спецификации производство физически невозможно</text>
+<text x="820" y="1484" font-family="'Spectral',serif" font-size="10" fill="#8a5a00">💰  Сдельщина: нет отметки в ERP = нет зарплаты</text>
+<text x="820" y="1500" font-family="'Spectral',serif" font-size="10" fill="#2a6b3a">✓   ОТК: деталь без контроля не покидает цех</text>
+<text x="820" y="1516" font-family="'Spectral',serif" font-size="10" fill="#1a6060">⚖  Сч. 10.07 — материалы в переработке на стороне</text>
+<text x="820" y="1532" font-family="'Spectral',serif" font-size="10" fill="#1e4a7a">НД — Направление деятельности (аналитика контракта)</text>
+<text x="820" y="1548" font-family="'Spectral',serif" font-size="10" fill="#8a5a00">Ордерная схема: разрыв физики и финансов</text>
+<text x="820" y="1564" font-family="'Spectral',serif" font-size="10" fill="#1a6060">B2B-маркетплейс 1С:Бизнес-сеть — бесплатно для ШЗА</text>
+
+<!-- stamp -->
+<text x="1284" y="1722" font-family="'JetBrains Mono',monospace" font-size="8" fill="#c8bfb0" text-anchor="end">ШЗА · v1.0 · 2025 · 1С:ERP</text>
+</svg>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-l">Шадринский завод агрегатов</div>
+  <div class="footer-r">
+    1С:ERP Управление предприятием<br>
+    Конфиденциально · 2025
+  </div>
+</div>
+
+<script>
+function switchView(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.vbtn').forEach((b, i) => b.classList.toggle('active', (v === 'step') ? i === 0 : i === 1));
+  document.getElementById('view-' + v).classList.add('active');
+}
+
+const counts = [5,5,4,4,4,5,5];
+const state  = [0,0,0,0,0,0,0];
+
+function buildProgress(si) {
+  const wrap = document.getElementById('prog' + si);
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  for (let i = 0; i < counts[si]; i++) {
+    const s = document.createElement('div');
+    s.className = 'sc-progress-seg';
+    s.id = 'pseg_' + si + '_' + i;
+    wrap.appendChild(s);
+  }
+}
+
+function renderSteps(si) {
+  const items = document.querySelectorAll('#sl' + si + ' .step-row');
+  const cur = state[si];
+  items.forEach((el, i) => {
+    el.classList.remove('active','done');
+    if (i === cur) el.classList.add('active');
+    else if (i < cur) el.classList.add('done');
+  });
+  for (let i = 0; i < counts[si]; i++) {
+    const seg = document.getElementById('pseg_' + si + '_' + i);
+    if (!seg) continue;
+    seg.classList.remove('active','done');
+    if (i === cur) seg.classList.add('active');
+    else if (i < cur) seg.classList.add('done');
+  }
+}
+
+function setStep(si, i) { state[si] = i; renderSteps(si); }
+function nextStep(si) { if (state[si] < counts[si]-1) { state[si]++; renderSteps(si); } }
+function prevStep(si) { if (state[si] > 0) { state[si]--; renderSteps(si); } }
+
+function switchSc(i) {
+  document.querySelectorAll('.sc-panel').forEach((p,idx) => p.classList.toggle('active', idx === i));
+  document.querySelectorAll('#sc-nav .sc-btn').forEach((b,idx) => b.classList.toggle('active', idx === i));
+}
+
+for (let i = 0; i < 7; i++) { buildProgress(i); renderSteps(i); }
+</script>
+</body>
+</html>
