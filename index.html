@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 <title>ШЗА — Регламент бизнес-процессов</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
@@ -954,8 +954,8 @@ body { padding-top: 0; }
 
 .mes-vbtn-struct.active { background: var(--accent, #c0440a) !important; }
 .struct-view { padding: 28px 40px 60px; background: var(--paper); }
-.struct-scroll { overflow-x: auto; }
-.struct-scroll::-webkit-scrollbar { height: 4px; }
+.struct-scroll { overflow: auto; }
+.struct-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
 .struct-scroll::-webkit-scrollbar-thumb { background: var(--rule); }
 .struct-header { margin-bottom: 24px; border-bottom: 1px solid var(--rule); padding-bottom: 16px; display:flex; align-items:baseline; gap:16px; }
 .struct-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); }
@@ -1074,22 +1074,7 @@ body { padding-top: 0; }
   .erp-bc-sep { font-size: 10px; }
 
   /* ─ BPMN / STRUCT scroll areas ─ */
-  .bpmn-scroll,
-  .struct-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    cursor: grab;
-  }
-  .bpmn-scroll:active,
-  .struct-scroll:active { cursor: grabbing; }
-
-  /* Pinch-zoom container */
-  .zoom-wrap {
-    transform-origin: top left;
-    will-change: transform;
-    display: inline-block;
-    min-width: 100%;
-  }
+  .bpmn-scroll, .struct-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
   /* Hint label under diagrams */
   .scroll-hint {
@@ -1214,6 +1199,81 @@ body { padding-top: 0; }
   .mes-vbtn {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+  }
+}
+
+
+/* ── Mobile legend (vertical, hidden on desktop) ── */
+.mob-legend { display: none; }
+
+@media (max-width: 768px) {
+  .mob-legend {
+    display: block;
+    padding: 0 14px 40px;
+    background: var(--paper);
+  }
+  .mob-leg-section {
+    margin-bottom: 28px;
+    border-top: 2px solid var(--rule);
+    padding-top: 18px;
+  }
+  .mob-leg-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .mob-leg-row {
+    display: flex;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--rule2);
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  .mob-leg-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink2);
+    flex-shrink: 0;
+  }
+  .mob-leg-val {
+    font-family: var(--body);
+    font-size: 13px;
+    color: var(--ink3);
+  }
+  .mob-leg-item {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink2);
+    padding: 7px 0;
+    border-bottom: 1px solid var(--rule2);
+    line-height: 1.5;
+  }
+  .mob-leg-principle {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule2);
+  }
+  .mob-leg-key {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .mob-key-red    { color: var(--red); }
+  .mob-key-amber  { color: var(--amber); }
+  .mob-key-green  { color: var(--green); }
+  .mob-key-blue   { color: var(--blue); }
+  .mob-key-purple { color: #6b2a6b; }
+  .mob-leg-desc {
+    font-family: var(--body);
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.6;
   }
 }
 
@@ -2382,6 +2442,62 @@ body { padding-top: 0; }
 </svg>
   </div>
 </div>
+
+<!-- Mobile legend: vertical sections, hidden on desktop -->
+<div class="mob-legend">
+  <div class="mob-leg-section">
+    <div class="mob-leg-title">РОЛИ</div>
+    <div class="mob-leg-row"><span class="mob-leg-name">Сережин М.Ю.</span><span class="mob-leg-val">— менеджер Отдела продаж</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">Иванов М.С.</span><span class="mob-leg-val">— Программист 1С / Сисадмин / ПДО, диспетчер производства</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">Зубачев Р.С.</span><span class="mob-leg-val">— Главный технолог</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">Ковшиков А.Л.</span><span class="mob-leg-val">— Инженер по качеству (ОТК)</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">Савельев Д.Ю.</span><span class="mob-leg-val">— Снабжение</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">Романченко С.В.</span><span class="mob-leg-val">— Склады</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">Рогожкина Н.</span><span class="mob-leg-val">— Финансы / ПЭО / Бухгалтерия</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">Демин Н.Н.</span><span class="mob-leg-val">— Директор производства</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">Пономарев Р.</span><span class="mob-leg-val">— Генеральный директор</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">Давыденко А.Г.</span><span class="mob-leg-val">— Заместитель генерального директора</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">ОНТД</span><span class="mob-leg-val">— Нормализация и техническая документация</span></div>
+    <div class="mob-leg-row"><span class="mob-leg-name">АО «ШЗГ»</span><span class="mob-leg-val">— Внешний переработчик (термичка/шлифовка)</span></div>
+  </div>
+  <div class="mob-leg-section">
+    <div class="mob-leg-title">ДОКУМЕНТЫ 1С:ERP</div>
+    <div class="mob-leg-item">Заказ клиента · Заказ на производство</div>
+    <div class="mob-leg-item">Ресурсная спецификация (В разр. → Действует)</div>
+    <div class="mob-leg-item">Плановая калькуляция</div>
+    <div class="mob-leg-item">Этап производства · Этап ОТК</div>
+    <div class="mob-leg-item">Приходный / Расходный ордер (ордерная схема)</div>
+    <div class="mob-leg-item">Передача сырья переработчику · Отчёт переработчика</div>
+    <div class="mob-leg-item">Акт о расхождениях (ТОРГ-2)</div>
+    <div class="mob-leg-item">Торговые предложения · 1С:Бизнес-сеть</div>
+    <div class="mob-leg-item">Выработка сотрудников</div>
+    <div class="mob-leg-item">Заказ поставщику · Заказ переработчику</div>
+  </div>
+  <div class="mob-leg-section">
+    <div class="mob-leg-title">КЛЮЧЕВЫЕ ПРИНЦИПЫ</div>
+    <div class="mob-leg-principle">
+      <div class="mob-leg-key mob-key-red">▣ MDM-шлюз:</div>
+      <div class="mob-leg-desc">без ГОСТ-артикула и статуса «Действует» производство физически невозможно</div>
+    </div>
+    <div class="mob-leg-principle">
+      <div class="mob-leg-key mob-key-amber">▣ Сдельщина:</div>
+      <div class="mob-leg-desc">нет отметки в ERP = нет зарплаты</div>
+    </div>
+    <div class="mob-leg-principle">
+      <div class="mob-leg-key mob-key-green">▣ ОТК-барьер:</div>
+      <div class="mob-leg-desc">без прохождения контроля деталь не покидает цех</div>
+    </div>
+    <div class="mob-leg-principle">
+      <div class="mob-leg-key mob-key-blue">▣ Ордерная схема:</div>
+      <div class="mob-leg-desc">физика ≠ финансы до решения ОТК</div>
+    </div>
+    <div class="mob-leg-principle">
+      <div class="mob-leg-key mob-key-purple">▣ Маржа по заказу:</div>
+      <div class="mob-leg-desc">аналитика «Направление деятельности»</div>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <!-- FOOTER -->
@@ -2683,76 +2799,6 @@ for (let i = 0; i < 7; i++) { buildProgress(i); renderSteps(i); updateNextBtn(i)
 </div>
 </div>
 
-<script>
 
-/* ── PINCH-TO-ZOOM for BPMN and Struct diagrams ── */
-(function() {
-  function addZoom(scrollEl) {
-    var el = scrollEl.querySelector('svg, .zoom-wrap');
-    if (!el) return;
-
-    // Wrap SVG in zoom-wrap div if not already
-    if (!el.classList.contains('zoom-wrap')) {
-      var wrap = document.createElement('div');
-      wrap.className = 'zoom-wrap';
-      el.parentNode.insertBefore(wrap, el);
-      wrap.appendChild(el);
-      el = wrap;
-    }
-
-    var scale = 1, lastDist = 0, startScale = 1;
-    var MIN = 0.5, MAX = 4;
-
-    function getDist(touches) {
-      var dx = touches[0].clientX - touches[1].clientX;
-      var dy = touches[0].clientY - touches[1].clientY;
-      return Math.sqrt(dx*dx + dy*dy);
-    }
-
-    scrollEl.addEventListener('touchstart', function(e) {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        lastDist = getDist(e.touches);
-        startScale = scale;
-      }
-    }, { passive: false });
-
-    scrollEl.addEventListener('touchmove', function(e) {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        var dist = getDist(e.touches);
-        scale = Math.min(MAX, Math.max(MIN, startScale * (dist / lastDist)));
-        el.style.transform = 'scale(' + scale + ')';
-        el.style.transformOrigin = 'top left';
-      }
-    }, { passive: false });
-
-    // Double-tap to reset
-    var lastTap = 0;
-    scrollEl.addEventListener('touchend', function(e) {
-      var now = Date.now();
-      if (now - lastTap < 300) {
-        scale = 1;
-        el.style.transform = 'scale(1)';
-      }
-      lastTap = now;
-    });
-  }
-
-  function initZoom() {
-    var bpmnScroll = document.querySelector('.bpmn-scroll');
-    var structScroll = document.querySelector('.struct-scroll');
-    if (bpmnScroll) addZoom(bpmnScroll);
-    if (structScroll) addZoom(structScroll);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initZoom);
-  } else {
-    initZoom();
-  }
-})();
-
-</script>
 </body>
 </html>
