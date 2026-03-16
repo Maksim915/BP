@@ -1277,6 +1277,11 @@ body { padding-top: 0; }
   }
 }
 
+
+/* Hide SVG legend on mobile — replaced by mob-legend HTML */
+@media (max-width: 768px) {
+  .svg-bpmn-legend { display: none; }
+}
 </style>
 </head>
 <body>
@@ -2389,6 +2394,7 @@ body { padding-top: 0; }
 <text x="1248" y="1528" font-family="'JetBrains Mono',monospace" font-size="10" fill="#2a6b3a" text-anchor="middle">Сделка закрыта</text>
 <line x1="1172" y1="1496" x2="1230" y2="1496" stroke="#2a6b3a" stroke-width="2" marker-end="url(#ag)"/>
 
+<g class="svg-bpmn-legend">
 <!-- ════════════════════════════════════════════ -->
 <!-- СПРАВОЧНАЯ ПЛАШКА                            -->
 <!-- ════════════════════════════════════════════ -->
@@ -2439,6 +2445,8 @@ body { padding-top: 0; }
 
 <!-- Штамп -->
 <text x="1556" y="2140" font-family="'JetBrains Mono',monospace" font-size="10" fill="#c8bfb0" text-anchor="end">ШЗА · Регламент v1.0 · 2026 · 1С:ERP</text>
+
+</g>
 </svg>
   </div>
 </div>
