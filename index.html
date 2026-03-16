@@ -16,7 +16,7 @@
   --ink4: #b0a898;
   --rule: #c8bfb0;
   --rule2: #ddd6c8;
-  --accent: #c0440a;      /* сталь-оранжевый */
+  --accent: #c0440a;      
   --accent2: #8f3006;
   --accent-pale: #f2e0d6;
   --green: #2a6b3a;
@@ -492,33 +492,620 @@ svg.bpmn { min-width: 1600px; font-family: var(--body); }
   text-align: right;
   line-height: 1.8;
 }
+
+/* ═══════════════════════════════════════════════════
+   MES MONITOR  ×  1С:ERP ШАПКА
+   Дизайн-мост: тёмный MES → синяя лента 1С → тёплая бумага
+═══════════════════════════════════════════════════ */
+
+/* Скрываем старую шапку и masthead */
+.header, .masthead { display: none !important; }
+body { padding-top: 0; }
+
+/* ── MES TOP STRIP ─────────────────────────────── */
+.mes-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+/* Бегущая строка — самая верхняя полоска */
+.mes-ticker-bar {
+  background: #0B1120;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(192,68,10,.25);
+  position: relative;
+}
+.mes-ticker-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg,
+    transparent, transparent 79px,
+    rgba(192,68,10,.05) 79px, rgba(192,68,10,.05) 80px);
+}
+.mes-ticker-text {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255,255,255,.22);
+  letter-spacing: .1em;
+  white-space: nowrap;
+  animation: mes-tick 40s linear infinite;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}
+@keyframes mes-tick { 0% { transform: translateX(30vw); } 100% { transform: translateX(-100%); } }
+.mes-ticker-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.mes-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: rgba(255,255,255,.35);
+  letter-spacing: .1em;
+  display: flex; align-items: center; gap: 5px;
+}
+.mes-tag b { color: rgba(255,255,255,.6); }
+.mes-led {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+}
+.mes-led.g { background: #22C55E; box-shadow: 0 0 5px #22C55E; animation: blink 2s infinite; }
+.mes-led.a { background: #FBBF24; box-shadow: 0 0 5px #FBBF24; animation: blink 1.2s infinite; }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.35; } }
+
+/* ── MES MAIN PANEL ─────────────────────────────── */
+.mes-main {
+  background: linear-gradient(180deg, #111827 0%, #0F1F36 100%);
+  border-bottom: 3px solid var(--accent);
+  display: flex;
+  align-items: stretch;
+  height: 68px;
+}
+
+/* Логотип */
+.mes-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+  border-right: 1px solid rgba(255,255,255,.07);
+  flex-shrink: 0;
+}
+.mes-brand-hex {
+  width: 38px; height: 38px; flex-shrink: 0;
+}
+.mes-brand-hex svg { width: 38px; height: 38px; }
+.mes-brand-text {}
+.mes-brand-name {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .04em;
+  line-height: 1.2;
+}
+.mes-brand-sub {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(255,255,255,.35);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* KPI блоки */
+.mes-kpis {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+.mes-kpi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border-right: 1px solid rgba(255,255,255,.06);
+}
+.mes-kpi-val {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+.mes-kpi-lbl {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+/* OEE кольцо */
+.mes-oee {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border-right: 1px solid rgba(255,255,255,.06);
+  flex-shrink: 0;
+}
+.mes-oee-ring { position: relative; width: 34px; height: 34px; }
+.mes-oee-ring svg { transform: rotate(-90deg); display: block; }
+.mes-oee-num {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 8.5px; font-weight: 700; color: #22C55E;
+}
+.mes-oee-lbl {
+  font-family: var(--mono); font-size: 8px;
+  color: rgba(255,255,255,.28); letter-spacing: .12em; margin-top: 2px;
+}
+
+/* Статусы */
+.mes-statuses {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 16px;
+  border-right: 1px solid rgba(255,255,255,.06);
+  flex-shrink: 0;
+}
+.mes-status-row {
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 10px;
+  color: rgba(255,255,255,.4); letter-spacing: .04em;
+}
+.mes-status-val { font-weight: 700; }
+.mes-status-val.g { color: #22C55E; }
+.mes-status-val.a { color: #FBBF24; }
+
+/* Модули */
+.mes-modules {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.mes-module {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255,255,255,.4);
+  letter-spacing: .05em;
+}
+.mes-module-dot {
+  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+}
+
+/* Кнопки переключения вида — правый край */
+.mes-view-btns {
+  margin-left: auto;
+  display: flex;
+  align-items: stretch;
+  border-left: 1px solid rgba(255,255,255,.07);
+}
+.mes-vbtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 22px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,.4);
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(255,255,255,.07);
+  cursor: pointer;
+  transition: all .15s;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.mes-vbtn:last-child { border-right: none; }
+.mes-vbtn:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.8); }
+.mes-vbtn.active {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.mes-vbtn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ── 1С ХЛЕБНЫЕ КРОШКИ ──────────────────────────── */
+.erp-breadcrumb-bar {
+  background: linear-gradient(180deg, #1F6BC4 0%, #1050A0 100%);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 6px;
+  border-bottom: 1px solid rgba(0,0,0,.2);
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+.erp-bc-logo {
+  display: flex; align-items: center; gap: 6px;
+  padding-right: 12px;
+  border-right: 1px solid rgba(255,255,255,.2);
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+.erp-bc-1c {
+  width: 18px; height: 18px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 700; color: #fff;
+  clip-path: polygon(3px 0%, calc(100% - 3px) 0%, 100% 3px, 100% 100%, 0% 100%, 0% 3px);
+  flex-shrink: 0;
+}
+.erp-bc-sysname {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,.7);
+  letter-spacing: .04em;
+}
+.erp-bc-sep {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,.25);
+}
+.erp-bc-crumb {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,.55);
+  letter-spacing: .02em;
+}
+.erp-bc-crumb.active {
+  color: #fff;
+  font-weight: 600;
+}
+.erp-bc-crumb.active::before {
+  content: '›';
+  color: rgba(255,255,255,.3);
+  margin-right: 6px;
+}
+
+/* Плавный переход к «бумаге» — декоративная полоска */
+.header-to-paper {
+  height: 8px;
+  background: linear-gradient(180deg, rgba(15,25,50,.15) 0%, transparent 100%);
+}
+
+
+/* ── Сценарий-финиш: оверлей перехода ── */
+.sc-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+}
+.sc-transition-overlay.show {
+  pointer-events: all;
+  animation: scOverlayIn .35s ease forwards;
+}
+.sc-transition-overlay.hide {
+  animation: scOverlayOut .3s ease forwards;
+}
+@keyframes scOverlayIn {
+  from { opacity: 0; backdrop-filter: blur(0px); background: rgba(26,22,18,0); }
+  to   { opacity: 1; backdrop-filter: blur(6px);  background: rgba(26,22,18,.82); }
+}
+@keyframes scOverlayOut {
+  from { opacity: 1; backdrop-filter: blur(6px);  background: rgba(26,22,18,.82); }
+  to   { opacity: 0; backdrop-filter: blur(0px);  background: rgba(26,22,18,0); }
+}
+
+.sc-transition-card {
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  padding: 44px 52px;
+  max-width: 460px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  transform: translateY(20px);
+  opacity: 0;
+  box-shadow: 0 24px 64px rgba(0,0,0,.4);
+}
+.sc-transition-overlay.show .sc-transition-card {
+  animation: scCardIn .4s .1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes scCardIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.sc-transition-done-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.sc-transition-tick {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--green-pale);
+  border: 2px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 24px;
+  animation: tickPop .4s .3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes tickPop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.sc-transition-title {
+  font-family: var(--serif);
+  font-size: 26px;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.sc-transition-sub {
+  font-family: var(--body);
+  font-size: 14px;
+  color: var(--ink3);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+.sc-transition-next-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink4);
+  margin-bottom: 10px;
+}
+.sc-transition-next-title {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: .06em;
+  margin-bottom: 28px;
+  padding: 10px 16px;
+  background: var(--accent-pale);
+  border-left: 3px solid var(--accent);
+}
+.sc-transition-btn {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background .2s;
+  position: relative;
+  overflow: hidden;
+}
+.sc-transition-btn:hover { background: var(--accent); }
+.sc-transition-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.08) 50%, transparent 100%);
+  transform: translateX(-100%);
+  animation: shimmer 1.4s .6s infinite;
+}
+@keyframes shimmer {
+  to { transform: translateX(200%); }
+}
+.sc-transition-skip {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink4);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 14px;
+  display: block;
+  width: 100%;
+  transition: color .15s;
+}
+.sc-transition-skip:hover { color: var(--ink2); }
+
+/* При последнем шаге кнопка меняет вид */
+.snav-btn-primary.is-last {
+  background: var(--green) !important;
+  animation: pulseGreen 1.5s ease-in-out infinite;
+}
+@keyframes pulseGreen {
+  0%,100% { box-shadow: 0 0 0 0 rgba(42,107,58,.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(42,107,58,0); }
+}
+
+
+.mes-vbtn-struct.active { background: var(--accent, #c0440a) !important; }
+.struct-view { padding: 28px 40px 60px; background: var(--paper); }
+.struct-scroll { overflow-x: auto; }
+.struct-scroll::-webkit-scrollbar { height: 4px; }
+.struct-scroll::-webkit-scrollbar-thumb { background: var(--rule); }
+.struct-header { margin-bottom: 24px; border-bottom: 1px solid var(--rule); padding-bottom: 16px; display:flex; align-items:baseline; gap:16px; }
+.struct-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); }
+.struct-title { font-family: var(--serif); font-size: 28px; color: var(--ink); }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="logo">ШЗА <em>/</em> Регламент процессов <em>/</em> 1С:ERP</div>
-  <div class="view-toggle">
-    <button class="vbtn" onclick="switchView('step')">Пошагово</button>
-    <button class="vbtn active" onclick="switchView('bpmn')">Блок-схема</button>
-  </div>
-</div>
+<!-- ═══════════════════════════════════════════════════
+     MES MONITOR  ×  1С:ERP — ШАПКА ШЗА
+═══════════════════════════════════════════════════ -->
+<div class="mes-wrap">
 
-<!-- MASTHEAD -->
-<div class="masthead">
-  <div class="masthead-left">
-    <div class="masthead-eyebrow">Внутренний регламент · Версия 1.0 · 2026</div>
-    <div class="masthead-title">Бизнес-процессы<br><em>производственного предприятия</em></div>
+  <!-- Бегущая строка -->
+  <div class="mes-ticker-bar">
+    <div class="mes-ticker-text">
+      СЦ-1: ПРОСЧЁТ КП &nbsp;▸&nbsp; СЦ-2: ПРОИЗВОДСТВЕННЫЙ КОНВЕЙЕР ШЗА &nbsp;▸&nbsp;
+      СЦ-2.1: КООПЕРАЦИЯ ШЗА → АО «ШЗГ» &nbsp;▸&nbsp; СЦ-3: ПЕРЕПРОДАЖА ПОКУПНЫХ ИЗДЕЛИЙ &nbsp;▸&nbsp;
+      СЦ-3.1: ВОЗВРАТ БРАКА ПОСТАВЩИКУ &nbsp;▸&nbsp; СЦ-4: MAKE-TO-STOCK / ДИРЕКТИВА ГД &nbsp;▸&nbsp;
+      СЦ-5: B2B-МАРКЕТПЛЕЙС 1С:БИЗНЕС-СЕТЬ &nbsp;&nbsp;&nbsp;
+    </div>
+    <div class="mes-ticker-right">
+      <div class="mes-tag"><div class="mes-led g"></div>LIVE</div>
+      <div class="mes-tag">OEE: <b>87%</b></div>
+      <div class="mes-tag">ВРЦ: <b>6/6</b></div>
+      <div class="mes-tag">Industry 4.0</div>
+    </div>
   </div>
-  <div class="masthead-meta">
-    Система: 1С:ERP Управление предприятием<br>
-    Сценариев: 7 · Шагов: 33<br>
-    Барьеров: MDM-шлюз, ОТК, Сдельщина<br>
-    Исполнитель: ШЗА<br>
-    Партнёр: АО «ШЗГ» (переработка)
+
+  <!-- Основная панель MES -->
+  <div class="mes-main">
+
+    <!-- Логотип -->
+    <div class="mes-brand">
+      <div class="mes-brand-hex">
+        <svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="19,2 35,11 35,27 19,36 3,27 3,11" fill="#1B5FA8" stroke="rgba(255,255,255,.15)" stroke-width=".5"/>
+          <polygon points="19,2 35,11 35,27 19,36 3,27 3,11" fill="none" stroke="rgba(192,68,10,.5)" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="19" y="24" font-family="'JetBrains Mono'" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">ШЗА</text>
+        </svg>
+      </div>
+      <div class="mes-brand-text">
+        <div class="mes-brand-name">Шахтинский завод ависервиса</div>
+        <div class="mes-brand-sub">Металлообработка · Метизы · Industry 4.0</div>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="mes-kpis">
+      <div class="mes-kpi"><div class="mes-kpi-val">07</div><div class="mes-kpi-lbl">Сценариев</div></div>
+      <div class="mes-kpi"><div class="mes-kpi-val">33</div><div class="mes-kpi-lbl">Шагов</div></div>
+      <div class="mes-kpi"><div class="mes-kpi-val">12</div><div class="mes-kpi-lbl">Ролей</div></div>
+    </div>
+
+    <!-- OEE -->
+    <div class="mes-oee">
+      <div class="mes-oee-ring">
+        <svg viewBox="0 0 34 34" width="34" height="34">
+          <circle cx="17" cy="17" r="13" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="3"/>
+          <circle cx="17" cy="17" r="13" fill="none" stroke="#22C55E" stroke-width="3"
+            stroke-dasharray="70.7 81.7" stroke-linecap="round"/>
+        </svg>
+        <div class="mes-oee-num">87%</div>
+      </div>
+      <div class="mes-oee-lbl">OEE</div>
+    </div>
+
+    <!-- Статусы -->
+    <div class="mes-statuses">
+      <div class="mes-status-row">
+        <div class="mes-led g"></div>Производство
+        <span class="mes-status-val g">АКТИВНО</span>
+      </div>
+      <div class="mes-status-row">
+        <div class="mes-led a"></div>MDM-шлюз
+        <span class="mes-status-val a">КОНТРОЛЬ</span>
+      </div>
+      <div class="mes-status-row">
+        <div class="mes-led a"></div>ОТК-барьер
+        <span class="mes-status-val a">АКТИВЕН</span>
+      </div>
+    </div>
+
+    <!-- Модули -->
+    <div class="mes-modules">
+      <div class="mes-module"><div class="mes-module-dot" style="background:#22C55E;box-shadow:0 0 4px #22C55E"></div>1С:ERP 2.5</div>
+      <div class="mes-module"><div class="mes-module-dot" style="background:#06B6D4;box-shadow:0 0 4px #06B6D4"></div>MES</div>
+      <div class="mes-module"><div class="mes-module-dot" style="background:#c0440a;box-shadow:0 0 4px #c0440a"></div>MDM</div>
+      <div class="mes-module"><div class="mes-module-dot" style="background:#A78BFA;box-shadow:0 0 4px #A78BFA"></div>Бизнес-сеть</div>
+    </div>
+
+    <!-- Переключатели вида -->
+    <div class="mes-view-btns">
+      <button class="mes-vbtn mes-vbtn-struct active" id="btn-struct" onclick="switchView('struct')">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
+          <rect x="5" y="1" width="4" height="3" rx=".4"/>
+          <rect x="1" y="9" width="4" height="3" rx=".4"/>
+          <rect x="5" y="9" width="4" height="3" rx=".4"/>
+          <rect x="9" y="9" width="4" height="3" rx=".4"/>
+          <line x1="7" y1="4" x2="7" y2="6.5"/>
+          <line x1="3" y1="6.5" x2="11" y2="6.5"/>
+          <line x1="3" y1="6.5" x2="3" y2="9"/>
+          <line x1="7" y1="6.5" x2="7" y2="9"/>
+          <line x1="11" y1="6.5" x2="11" y2="9"/>
+        </svg>
+        Структура ООО «ШЗА»
+      </button>
+      <button class="mes-vbtn" id="btn-bpmn" onclick="switchView('bpmn')">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
+          <rect x="1" y="4" width="3" height="3" rx=".4"/><rect x="5.5" y="1" width="3" height="3" rx=".4"/>
+          <rect x="10" y="4" width="3" height="3" rx=".4"/><rect x="5.5" y="9" width="3" height="4" rx=".4"/>
+          <line x1="4" y1="5.5" x2="5.5" y2="5.5"/><line x1="8.5" y1="5.5" x2="10" y2="5.5"/>
+          <line x1="7" y1="4" x2="7" y2="4.5"/><line x1="7" y1="7" x2="7" y2="9"/>
+        </svg>
+        Схема BPMN
+      </button>
+      <button class="mes-vbtn" id="btn-step" onclick="switchView('step')">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
+          <circle cx="2.5" cy="3.5" r="1.2" fill="currentColor" stroke="none"/>
+          <circle cx="2.5" cy="7" r="1.2" fill="currentColor" stroke="none"/>
+          <circle cx="2.5" cy="10.5" r="1.2" fill="currentColor" stroke="none"/>
+          <line x1="5" y1="3.5" x2="12" y2="3.5"/>
+          <line x1="5" y1="7" x2="12" y2="7"/>
+          <line x1="5" y1="10.5" x2="9" y2="10.5"/>
+        </svg>
+        Пошаговый регламент
+      </button>
+    </div>
+
   </div>
-</div>
+
+  <!-- 1С: хлебные крошки -->
+  <div class="erp-breadcrumb-bar">
+    <div class="erp-bc-logo">
+      <div class="erp-bc-1c">1С</div>
+      <span class="erp-bc-sysname">1С:ERP Управление предприятием 2.5</span>
+    </div>
+    <span class="erp-bc-crumb">Производство</span>
+    <span class="erp-bc-sep">›</span>
+    <span class="erp-bc-crumb">Регламенты</span>
+    <span class="erp-bc-sep">›</span>
+    <span class="erp-bc-crumb active">Бизнес-процессы ШЗА</span>
+  </div>
+
+</div><!-- /mes-wrap -->
+
+<!-- Переход к контенту -->
+<div class="header-to-paper"></div>
+
+
 
 
 <!-- ═══════════ STEP VIEW ═══════════ -->
@@ -663,9 +1250,9 @@ svg.bpmn { min-width: 1600px; font-family: var(--body); }
         <div class="step-content">
           <div class="step-hdr"><span class="step-title">Барьер ОТК</span><span class="tag tag-block">Блокировка выпуска</span></div>
           <div class="step-detail">
-            <div class="step-what">Этап «Контроль ОТК» — последний в маршруте каждой детали. Деталь автоматически падает в АРМ Ковшиковой А.Л. Брак изолируется мгновенно на уровне операций.</div>
+            <div class="step-what">Этап «Контроль ОТК» — последний в маршруте каждой детали. Деталь автоматически падает в АРМ Ковшикова А.Л. Брак изолируется мгновенно на уровне операций.</div>
             <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Пока Ковшиков не переведёт Этап ОТК в «Завершён» — система блокирует выпуск продукции. На склад попадают только 100% годные изделия.</div></div>
-            <div class="actors"><span class="actor">Ковшикова А.Л.</span><span class="actor">Этап ОТК</span></div>
+            <div class="actors"><span class="actor">Ковшиков А.Л.</span><span class="actor">Этап ОТК</span></div>
           </div>
         </div>
       </div>
@@ -912,7 +1499,7 @@ svg.bpmn { min-width: 1600px; font-family: var(--body); }
           <div class="step-hdr"><span class="step-title">Расчёт дефицита и закупка сырья</span><span class="tag tag-warn">Дефицит → Заказ</span></div>
           <div class="step-detail">
             <div class="step-what">Романченко запускает АРМ «Формирование заказов по потребностям». Система видит дефицит под производственные заказы и автоматически формирует «Заказы поставщикам».</div>
-            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Романченко покупает металл строго под утверждённый директорами объём, а не «про запас». Металл проходит Входной контроль Ковшикова.</div></div>
+            <div class="step-why"><div class="step-why-lbl">Зачем это нужно</div><div class="step-why-txt">Романченко покупает металл строго под утверждённый директорами объём, а не «про запас». Металл проходит Входной контроль Ковшиков.</div></div>
             <div class="actors"><span class="actor">Романченко</span><span class="actor">Ковшиков А.Л.</span></div>
           </div>
         </div>
@@ -1024,7 +1611,7 @@ svg.bpmn { min-width: 1600px; font-family: var(--body); }
 
 
 <!-- ═══════════════════════════════════════ BPMN VIEW ═══════════════════════════════════════ -->
-<div class="view active" id="view-bpmn">
+<div class="view" id="view-bpmn">
 <div class="bpmn-view">
   <div class="bpmn-topbar">
     <div class="bpmn-label">BPMN · Бизнес-процессы ШЗА · 1С:ERP · Все сценарии</div>
@@ -1039,7 +1626,7 @@ svg.bpmn { min-width: 1600px; font-family: var(--body); }
   </div>
 
   <div class="bpmn-scroll">
-<svg class="bpmn" viewBox="0 0 1600 2200" xmlns="http://www.w3.org/2000/svg" style="background:#f5f0e8">
+<svg class="bpmn" viewBox="0 310 1600 1890" xmlns="http://www.w3.org/2000/svg" style="background:#f5f0e8">
 <defs>
   <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
     <path d="M1 2L8 5L1 8" fill="none" stroke="#b0a898" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1064,22 +1651,7 @@ svg.bpmn { min-width: 1600px; font-family: var(--body); }
   </marker>
 </defs>
 
-<!-- ═══ SWIMLANE HEADERS (sticky legend) ═══ -->
-<rect x="0" y="0" width="1600" height="60" fill="#1a1612"/>
-<text x="20" y="36" font-family="'JetBrains Mono',monospace" font-size="13" fill="#c0440a" font-weight="700" letter-spacing="0.12em">ОТДЕЛ ПРОДАЖ</text>
-<rect x="0" y="60" width="1600" height="60" fill="#f0e8de"/>
-<text x="20" y="96" font-family="'JetBrains Mono',monospace" font-size="13" fill="#a01c1c" font-weight="700" letter-spacing="0.12em">MDM / ОНТД / ТЕХНОЛОГ</text>
-<rect x="0" y="120" width="1600" height="60" fill="#eaf0e8"/>
-<text x="20" y="156" font-family="'JetBrains Mono',monospace" font-size="13" fill="#2a6b3a" font-weight="700" letter-spacing="0.12em">ПРОИЗВОДСТВО / ПДО</text>
-<rect x="0" y="180" width="1600" height="60" fill="#f0eede"/>
-<text x="20" y="216" font-family="'JetBrains Mono',monospace" font-size="13" fill="#8a5a00" font-weight="700" letter-spacing="0.12em">ОТК / СНАБЖЕНИЕ / СКЛАД</text>
-<rect x="0" y="240" width="1600" height="60" fill="#eee8f0"/>
-<text x="20" y="276" font-family="'JetBrains Mono',monospace" font-size="13" fill="#6b2a6b" font-weight="700" letter-spacing="0.12em">ФИНАНСЫ / ПЭО</text>
-<line x1="0" y1="60" x2="1600" y2="60" stroke="#c8bfb0" stroke-width="0.75"/>
-<line x1="0" y1="120" x2="1600" y2="120" stroke="#c8bfb0" stroke-width="0.75"/>
-<line x1="0" y1="180" x2="1600" y2="180" stroke="#c8bfb0" stroke-width="0.75"/>
-<line x1="0" y1="240" x2="1600" y2="240" stroke="#c8bfb0" stroke-width="0.75"/>
-<line x1="0" y1="300" x2="1600" y2="300" stroke="#1a1612" stroke-width="2"/>
+
 
 <!-- helper macro: box = 160w × 64h, text top=+22, subtext top=+44 -->
 
@@ -1203,7 +1775,7 @@ svg.bpmn { min-width: 1600px; font-family: var(--body); }
 <!-- Этап ОТК -->
 <rect x="748" y="552" width="150" height="64" fill="#f0eede" stroke="#8a5a00" stroke-width="2.5"/>
 <text x="823" y="574" font-family="'Spectral',serif" font-size="13" fill="#8a5a00" text-anchor="middle" font-weight="500">Этап ОТК</text>
-<text x="823" y="592" font-family="'JetBrains Mono',monospace" font-size="11" fill="#aa7a20" text-anchor="middle">Ковшикова А.Л.</text>
+<text x="823" y="592" font-family="'JetBrains Mono',monospace" font-size="11" fill="#aa7a20" text-anchor="middle">Ковшиков А.Л.</text>
 <text x="823" y="608" font-family="'JetBrains Mono',monospace" font-size="10" fill="#aa7a20" text-anchor="middle">Блокировка выпуска</text>
 <line x1="716" y1="584" x2="746" y2="584" stroke="#2a6b3a" stroke-width="2" marker-end="url(#ag)"/>
 
@@ -1414,7 +1986,7 @@ svg.bpmn { min-width: 1600px; font-family: var(--body); }
 <line x1="82" y1="1324" x2="102" y2="1324" stroke="#b0a898" stroke-width="1.5" marker-end="url(#a)"/>
 
 <rect x="296" y="1292" width="160" height="64" fill="#eaf0e8" stroke="#2a6b3a" stroke-width="2"/>
-<text x="376" y="1314" font-family="'Spectral',serif" font-size="13" fill="#2a6b3a" text-anchor="middle" font-weight="500">Заказы МТС</text>
+<text x="376" y="1314" font-family="'Spectral',serif" font-size="13" fill="#2a6b3a" text-anchor="middle" font-weight="500">Заказы ОМТС</text>
 <text x="376" y="1332" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4a8a5a" text-anchor="middle">Иванов · 1 клик</text>
 <text x="376" y="1348" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a8a5a" text-anchor="middle">Свободный остаток</text>
 <line x1="264" y1="1324" x2="294" y2="1324" stroke="#6b2a6b" stroke-width="2" marker-end="url(#ap)"/>
@@ -1510,14 +2082,18 @@ svg.bpmn { min-width: 1600px; font-family: var(--body); }
 <!-- Колонка: Роли -->
 <text x="44" y="1678" font-family="'JetBrains Mono',monospace" font-size="11" fill="#c0440a" letter-spacing="0.1em" font-weight="700">РОЛИ</text>
 <text x="44" y="1700" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Сережин М.Ю. — менеджер Отдела продаж</text>
-<text x="44" y="1720" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Иванов М.С. — ПДО, диспетчер производства</text>
-<text x="44" y="1740" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Зубачев Р.С. — Главный технолог</text>
-<text x="44" y="1760" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Ковшикова А.Л. — Инженер по качеству (ОТК)</text>
-<text x="44" y="1780" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Романченко — Снабженец</text>
-<text x="44" y="1800" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Рогожкина Н. — Финансы / ПЭО</text>
-<text x="44" y="1820" font-family="'Spectral',serif" font-size="12" fill="#3d3830">ОНТД — нормализация и техническая документация</text>
-<text x="44" y="1840" font-family="'Spectral',serif" font-size="12" fill="#3d3830">АО «ШЗГ» — внешний переработчик (термичка)</text>
-<text x="44" y="1860" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Демин Н.Н. — Директор производства</text>
+<text x="44" y="1720" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Иванов М.С. — Программист-разработчик 1С / системный администратор /</text>
+<text x="60" y="1740" font-family="'Spectral',serif" font-size="12" fill="#3d3830">ПДО, диспетчер производства</text>
+<text x="44" y="1760" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Зубачев Р.С. — Главный технолог</text>
+<text x="44" y="1780" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Ковшиков А.Л. — Инженер по качеству (ОТК)</text>
+<text x="44" y="1800" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Савельев Д.Ю. — Снабжение</text>
+<text x="44" y="1820" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Романченко С.В. — Склады</text>
+<text x="44" y="1840" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Рогожкина Н. — Финансы / ПЭО</text>
+<text x="44" y="1860" font-family="'Spectral',serif" font-size="12" fill="#3d3830">ОНТД — нормализация и техническая документация</text>
+<text x="44" y="1880" font-family="'Spectral',serif" font-size="12" fill="#3d3830">АО «ШЗГ» — внешний переработчик (термичка/шлифовка)</text>
+<text x="44" y="1900" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Демин Н.Н. — Директор производства</text>
+<text x="44" y="1920" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Панамарев Р. — Генеральный директор</text>
+<text x="44" y="1940" font-family="'Spectral',serif" font-size="12" fill="#3d3830">Давыденко А.Г. — Заместитель генерального директора</text>
 
 <!-- Колонка: Документы -->
 <text x="550" y="1678" font-family="'JetBrains Mono',monospace" font-size="11" fill="#c0440a" letter-spacing="0.1em" font-weight="700">ДОКУМЕНТЫ 1С:ERP</text>
@@ -1562,6 +2138,10 @@ svg.bpmn { min-width: 1600px; font-family: var(--body); }
 
 <script>
 function switchView(v) {
+  // sync mes-vbtn active
+  document.querySelectorAll('.mes-vbtn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('btn-' + v);
+  if (btn) btn.classList.add('active');
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.vbtn').forEach((b, i) => b.classList.toggle('active', (v === 'step') ? i === 0 : i === 1));
   document.getElementById('view-' + v).classList.add('active');
@@ -1599,16 +2179,251 @@ function renderSteps(si) {
   }
 }
 
-function setStep(si, i) { state[si] = i; renderSteps(si); }
-function nextStep(si) { if (state[si] < counts[si]-1) { state[si]++; renderSteps(si); } }
-function prevStep(si) { if (state[si] > 0) { state[si]--; renderSteps(si); } }
+function setStep(si, i) { state[si] = i; renderSteps(si); updateNextBtn(si); }
+
+function updateNextBtn(si) {
+  const isLast = state[si] >= counts[si] - 1;
+  const btns = document.querySelectorAll('[onclick="nextStep(' + si + ')"]');
+  btns.forEach(b => {
+    b.classList.toggle('is-last', isLast);
+    b.textContent = isLast
+      ? (si < 6 ? 'Следующий сценарий →' : 'Всё завершено ✓')
+      : 'Следующий шаг →';
+  });
+}
+
+function nextStep(si) {
+  if (state[si] < counts[si] - 1) {
+    state[si]++;
+    renderSteps(si);
+    updateNextBtn(si);
+  } else if (si < 6) {
+    showTransitionOverlay(si);
+  } else {
+    showFinishOverlay();
+  }
+}
+
+function prevStep(si) {
+  if (state[si] > 0) {
+    state[si]--;
+    renderSteps(si);
+    updateNextBtn(si);
+  }
+}
+
+const SC_NAMES = ["СЦ-1 · Просчёт КП", "СЦ-2 · Производственный конвейер", "СЦ-2.1 · Кооперация", "СЦ-3 · Перепродажа", "СЦ-3.1 · Возврат брака", "СЦ-4 · Make-to-Stock", "СЦ-5 · B2B Маркетплейс"];
+const SC_SUBS = [
+  "Запрос получен, КП отправлено, цех запущен.",
+  "Детали изготовлены, ОТК пройден, маржа зафиксирована.",
+  "Кооперация с АО «ШЗГ» завершена.",
+  "Перепродажа закрыта, прибыль зафиксирована.",
+  "Брак возвращён, допоставка принята.",
+  "Производство на склад завершено.",
+  "B2B-маркетплейс настроен, лиды захвачены."
+];
+
+let _pendingNextSc = -1;
+
+function showTransitionOverlay(si) {
+  _pendingNextSc = si + 1;
+  document.getElementById('sc-overlay-done-title').textContent = SC_NAMES[si];
+  document.getElementById('sc-overlay-done-sub').textContent   = SC_SUBS[si];
+  document.getElementById('sc-overlay-next-title').textContent = SC_NAMES[si + 1];
+  const overlay = document.getElementById('sc-overlay');
+  overlay.classList.remove('hide');
+  overlay.classList.add('show');
+  document.getElementById('sc-overlay-btn').onclick = function() {
+    closeOverlay();
+    setTimeout(() => {
+      const i = _pendingNextSc;
+      state[i] = 0;
+      renderSteps(i);
+      updateNextBtn(i);
+      switchSc(i);
+    }, 180);
+  };
+}
+
+function showFinishOverlay() {
+  document.getElementById('sc-overlay-done-title').textContent  = 'Все сценарии пройдены!';
+  document.getElementById('sc-overlay-done-sub').textContent    = 'Вы изучили все 7 сценариев регламента ШЗА.';
+  document.getElementById('sc-overlay-next-label').textContent  = '';
+  document.getElementById('sc-overlay-next-title').textContent  = '07 сценариев · 33 шага · 12 ролей';
+  document.getElementById('sc-overlay-btn').textContent         = '← Вернуться к началу';
+  document.getElementById('sc-overlay-btn').onclick = function() {
+    closeOverlay();
+    setTimeout(() => { switchSc(0); state[0]=0; renderSteps(0); updateNextBtn(0); }, 180);
+  };
+  const overlay = document.getElementById('sc-overlay');
+  overlay.classList.remove('hide');
+  overlay.classList.add('show');
+}
+
+function closeOverlay() {
+  const overlay = document.getElementById('sc-overlay');
+  overlay.classList.remove('show');
+  overlay.classList.add('hide');
+  setTimeout(() => overlay.classList.remove('hide'), 350);
+}
 
 function switchSc(i) {
   document.querySelectorAll('.sc-panel').forEach((p,idx) => p.classList.toggle('active', idx === i));
   document.querySelectorAll('#sc-nav .sc-btn').forEach((b,idx) => b.classList.toggle('active', idx === i));
+  // scroll to top of step view
+  const sv = document.getElementById('view-step');
+  if (sv) sv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-for (let i = 0; i < 7; i++) { buildProgress(i); renderSteps(i); }
+for (let i = 0; i < 7; i++) { buildProgress(i); renderSteps(i); updateNextBtn(i); }
 </script>
+
+<!-- ── Оверлей перехода между сценариями ── -->
+<div class="sc-transition-overlay" id="sc-overlay">
+  <div class="sc-transition-card">
+    <div class="sc-transition-done-label">Сценарий завершён</div>
+    <div class="sc-transition-tick">✓</div>
+    <div class="sc-transition-title" id="sc-overlay-done-title">—</div>
+    <div class="sc-transition-sub" id="sc-overlay-done-sub">Все шаги пройдены</div>
+    <div class="sc-transition-next-label" id="sc-overlay-next-label">Следующий сценарий</div>
+    <div class="sc-transition-next-title" id="sc-overlay-next-title">—</div>
+    <button class="sc-transition-btn" id="sc-overlay-btn">Перейти к следующему сценарию →</button>
+    <button class="sc-transition-skip" onclick="closeOverlay()">Закрыть</button>
+  </div>
+</div>
+
+
+<!-- ════════════ СТРУКТУРА ООО «ШЗА» ════════════ -->
+<div class="view active" id="view-struct">
+<div class="struct-view">
+  <div class="struct-header">
+    <span class="struct-eyebrow">Организационная структура</span>
+    <span class="struct-title">ООО «Шахтинский завод ависервиса»</span>
+  </div>
+  <div class="struct-scroll">
+<svg viewBox="0 0 1740 1060" xmlns="http://www.w3.org/2000/svg" style="min-width:920px;width:100%;background:#f5f0e8;display:block">
+<rect width="1740" height="1060" fill="#f5f0e8"/>
+<defs><pattern id="ogp" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0L0 0 0 24" fill="none" stroke="rgba(26,22,18,.04)" stroke-width=".5"/></pattern></defs>
+<rect width="1740" height="1060" fill="url(#ogp)"/>
+<rect x="0" y="0" width="1740" height="3" fill="#c0440a"/>
+<rect x="748" y="22" width="244" height="70" rx="2" fill="#1a1612" stroke="#1a1612" stroke-width="2"/>
+<rect x="748" y="22" width="244" height="5" rx="1" fill="#c0440a"/>
+<text x="870" y="44" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#f5f0e8" text-anchor="middle" font-weight="700">УЧРЕДИТЕЛИ (2 ЧЕЛ.)</text>
+<text x="870" y="60" font-family="'Spectral', Georgia, serif" font-size="13" fill="#b0a898" text-anchor="middle" font-style="italic">Владельцы бизнес-модели</text>
+<text x="870" y="75" font-family="'JetBrains Mono', monospace" font-size="9" fill="#8a7a68" text-anchor="middle">Отчёт: Валовая прибыль</text>
+<line x1="870" y1="92" x2="870" y2="148" stroke="#c0440a" stroke-width="2"/>
+<rect x="748" y="148" width="244" height="68" rx="2" fill="#1a1612" stroke="#1a1612" stroke-width="2"/>
+<rect x="748" y="148" width="244" height="5" rx="1" fill="#c0440a"/>
+<text x="870" y="174" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#f5f0e8" text-anchor="middle" font-weight="700">ГЕНЕРАЛЬНЫЙ ДИРЕКТОР</text>
+<text x="870" y="194" font-family="'Spectral', Georgia, serif" font-size="13" fill="#b0a898" text-anchor="middle" font-style="italic">Пономарев Р.</text>
+<line x1="870" y1="216" x2="870" y2="278" stroke="#c0440a" stroke-width="2"/>
+<rect x="736" y="278" width="268" height="78" rx="2" fill="#1a1612" stroke="#1a1612" stroke-width="2"/>
+<rect x="736" y="278" width="268" height="5" rx="1" fill="#c0440a"/>
+<text x="870" y="300" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#f5f0e8" text-anchor="middle" font-weight="700">ЗАМ. ГЕНЕРАЛЬНОГО ДИРЕКТОРА</text>
+<text x="870" y="316" font-family="'Spectral', Georgia, serif" font-size="13" fill="#b0a898" text-anchor="middle" font-style="italic">Давыденко А.Г.</text>
+<text x="870" y="331" font-family="'JetBrains Mono', monospace" font-size="9" fill="#8a7a68" text-anchor="middle">Операционный директор · Рук. ОП</text>
+<line x1="870" y1="356" x2="870" y2="392" stroke="#8a7a68" stroke-width="1.5"/>
+<line x1="136" y1="392" x2="1600" y2="392" stroke="#8a7a68" stroke-width="1.5"/>
+<line x1="136" y1="392" x2="136" y2="422" stroke="#1e4a7a" stroke-width="1.5"/>
+<rect x="36" y="422" width="200" height="72" rx="2" fill="#ddeaf5" stroke="#1e4a7a" stroke-width="1.8"/>
+<rect x="36" y="422" width="200" height="4" rx="1" fill="#1e4a7a"/>
+<text x="136" y="442" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#1e4a7a" text-anchor="middle" font-weight="700">СНАБЖЕНИЕ + СКЛАД</text>
+<text x="136" y="458" font-family="'Spectral', Georgia, serif" font-size="12" fill="#3d3830" text-anchor="middle" font-style="italic">Савельев Д.Ю.</text>
+<text x="136" y="474" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7a7268" text-anchor="middle">Романченко С.В. — склады</text>
+<line x1="380" y1="392" x2="380" y2="422" stroke="#c0440a" stroke-width="1.5"/>
+<rect x="280" y="422" width="200" height="72" rx="2" fill="#fff4ee" stroke="#c0440a" stroke-width="1.8"/>
+<rect x="280" y="422" width="200" height="4" rx="1" fill="#c0440a"/>
+<text x="380" y="442" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#c0440a" text-anchor="middle" font-weight="700">ДИРЕКТОР ПРОИЗВОДСТВА</text>
+<text x="380" y="458" font-family="'Spectral', Georgia, serif" font-size="12" fill="#3d3830" text-anchor="middle" font-style="italic">Демин Н.Н.</text>
+<text x="380" y="474" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7a7268" text-anchor="middle">Завод-в-заводе · Диспетчер</text>
+<line x1="624" y1="392" x2="624" y2="422" stroke="#8a5a00" stroke-width="1.5"/>
+<rect x="524" y="422" width="200" height="72" rx="2" fill="#f5ead0" stroke="#8a5a00" stroke-width="1.8"/>
+<rect x="524" y="422" width="200" height="4" rx="1" fill="#8a5a00"/>
+<text x="624" y="442" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#8a5a00" text-anchor="middle" font-weight="700">КТО</text>
+<text x="624" y="458" font-family="'Spectral', Georgia, serif" font-size="12" fill="#3d3830" text-anchor="middle" font-style="italic">Зубачев Р.С.</text>
+<text x="624" y="474" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7a7268" text-anchor="middle">Спецификации · Параметриз.</text>
+<line x1="868" y1="392" x2="868" y2="422" stroke="#a01c1c" stroke-width="1.5"/>
+<rect x="768" y="422" width="200" height="72" rx="2" fill="#f5e0e0" stroke="#a01c1c" stroke-width="1.8"/>
+<rect x="768" y="422" width="200" height="4" rx="1" fill="#a01c1c"/>
+<text x="868" y="442" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#a01c1c" text-anchor="middle" font-weight="700">СЛУЖБА МЕТРОЛОГИИ</text>
+<text x="868" y="458" font-family="'Spectral', Georgia, serif" font-size="12" fill="#3d3830" text-anchor="middle" font-style="italic">Давыденко А.М.</text>
+<text x="868" y="474" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7a7268" text-anchor="middle">Совмещает функции ОТК</text>
+<line x1="1112" y1="392" x2="1112" y2="422" stroke="#c0440a" stroke-width="1.5"/>
+<rect x="1012" y="422" width="200" height="72" rx="2" fill="#fff4ee" stroke="#c0440a" stroke-width="1.8"/>
+<rect x="1012" y="422" width="200" height="4" rx="1" fill="#c0440a"/>
+<text x="1112" y="442" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#c0440a" text-anchor="middle" font-weight="700">ОТДЕЛ ПРОДАЖ</text>
+<text x="1112" y="458" font-family="'Spectral', Georgia, serif" font-size="12" fill="#3d3830" text-anchor="middle" font-style="italic">Сережин М.Ю.</text>
+<text x="1112" y="474" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7a7268" text-anchor="middle">КП · Калькуляции · CRM</text>
+<line x1="1356" y1="392" x2="1356" y2="422" stroke="#a01c1c" stroke-width="1.5"/>
+<rect x="1256" y="422" width="200" height="72" rx="2" fill="#f5e0e0" stroke="#a01c1c" stroke-width="1.8"/>
+<rect x="1256" y="422" width="200" height="4" rx="1" fill="#a01c1c"/>
+<text x="1356" y="442" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#a01c1c" text-anchor="middle" font-weight="700">ИНЖЕНЕР ПО КАЧЕСТВУ</text>
+<text x="1356" y="458" font-family="'Spectral', Georgia, serif" font-size="12" fill="#3d3830" text-anchor="middle" font-style="italic">Ковшиков А.Л.</text>
+<text x="1356" y="474" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7a7268" text-anchor="middle">ОТК · Лаборатория АО ШЗГ</text>
+<line x1="1600" y1="392" x2="1600" y2="422" stroke="#2a6b3a" stroke-width="1.5"/>
+<rect x="1500" y="422" width="200" height="72" rx="2" fill="#eaf0e8" stroke="#2a6b3a" stroke-width="1.8"/>
+<rect x="1500" y="422" width="200" height="4" rx="1" fill="#2a6b3a"/>
+<text x="1600" y="442" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#2a6b3a" text-anchor="middle" font-weight="700">ПЭО + БУХ. + ОРП</text>
+<text x="1600" y="458" font-family="'Spectral', Georgia, serif" font-size="12" fill="#3d3830" text-anchor="middle" font-style="italic">Рогожкина Н.</text>
+<text x="1600" y="474" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7a7268" text-anchor="middle">Зарплата · Закрытие месяца</text>
+<line x1="380" y1="494" x2="380" y2="522" stroke="#8a7a68" stroke-width="1.5"/>
+<line x1="280" y1="522" x2="480" y2="522" stroke="#8a7a68" stroke-width="1.5"/>
+<line x1="280" y1="522" x2="280" y2="566" stroke="#6b2a6b" stroke-width="1.5"/>
+<rect x="186" y="566" width="188" height="62" rx="2" fill="#f0eaf5" stroke="#6b2a6b" stroke-width="1.8"/>
+<rect x="186" y="566" width="188" height="4" rx="1" fill="#6b2a6b"/>
+<text x="280" y="586" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#6b2a6b" text-anchor="middle" font-weight="700">IT + ПДО</text>
+<text x="280" y="602" font-family="'Spectral', Georgia, serif" font-size="12" fill="#3d3830" text-anchor="middle" font-style="italic">Иванов М.С.</text>
+<text x="280" y="618" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7a7268" text-anchor="middle">1С-разработчик · Сисадмин</text>
+<line x1="480" y1="522" x2="480" y2="566" stroke="#2a6b3a" stroke-width="1.5"/>
+<rect x="386" y="566" width="188" height="62" rx="2" fill="#eaf0e8" stroke="#2a6b3a" stroke-width="1.8"/>
+<rect x="386" y="566" width="188" height="4" rx="1" fill="#2a6b3a"/>
+<text x="480" y="586" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#2a6b3a" text-anchor="middle" font-weight="700">ПРОИЗВОДСТВЕННЫЙ ЦЕХ</text>
+<text x="480" y="602" font-family="'Spectral', Georgia, serif" font-size="12" fill="#3d3830" text-anchor="middle" font-style="italic">Токари · Фрезеровщики</text>
+<text x="480" y="618" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7a7268" text-anchor="middle">6 станков ВРЦ · Сдельно</text>
+
+
+
+
+
+<line x1="480" y1="628" x2="480" y2="700" stroke="#c8bfb0" stroke-width="1.2" stroke-dasharray="5,3"/>
+<rect x="382" y="700" width="196" height="66" rx="4" fill="#f0e8de" stroke="#8a5a00" stroke-width="1.5"/>
+<rect x="382" y="700" width="196" height="4" rx="1" fill="#8a5a00"/>
+<text x="480" y="720" font-family="'JetBrains Mono', monospace" font-size="11" fill="#8a5a00" text-anchor="middle" font-weight="700">АО «ШЗГ»</text>
+<text x="480" y="737" font-family="'Spectral', Georgia, serif" font-size="11.5" fill="#3d3830" text-anchor="middle" font-style="italic">Внешний переработчик</text>
+<text x="480" y="752" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#7a7268" text-anchor="middle">Термичка · Шлифовка</text>
+<text x="480" y="687" font-family="'JetBrains Mono', monospace" font-size="9" fill="#b0a898" text-anchor="middle">— ВНЕШНИЙ ПАРТНЁР —</text>
+<line x1="1356" y1="494" x2="1356" y2="733" stroke="#c8bfb0" stroke-width="1" stroke-dasharray="5,3"/>
+<line x1="1356" y1="733" x2="578" y2="733" stroke="#c8bfb0" stroke-width="1" stroke-dasharray="5,3"/>
+<text x="1027" y="724" font-family="'JetBrains Mono', monospace" font-size="9" fill="#b0a898" text-anchor="middle">Лаборатория</text>
+<line x1="1004" y1="317" x2="1059" y2="317" stroke="#c8bfb0" stroke-width="1.2" stroke-dasharray="5,3"/>
+<line x1="1059" y1="317" x2="1059" y2="240" stroke="#c8bfb0" stroke-width="1.2" stroke-dasharray="5,3"/>
+<line x1="1059" y1="240" x2="1112" y2="240" stroke="#c8bfb0" stroke-width="1.2" stroke-dasharray="5,3"/>
+<line x1="1112" y1="240" x2="1112" y2="422" stroke="#c8bfb0" stroke-width="1.2" stroke-dasharray="5,3"/>
+<text x="1085" y="230" font-family="'JetBrains Mono', monospace" font-size="9" fill="#b0a898" text-anchor="middle">Функциональная связь</text>
+<rect x="28" y="820" width="520" height="132" rx="3" fill="rgba(26,22,18,.03)" stroke="#c8bfb0" stroke-width="1"/>
+<text x="42" y="842" font-family="'JetBrains Mono', monospace" font-size="10" fill="#c0440a" text-anchor="start" font-weight="700">КАК ЧИТАТЬ СХЕМУ</text>
+<text x="42" y="864" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#1a1612" text-anchor="start" font-weight="700">Тёмный блок</text>
+<text x="218" y="864" font-family="'Spectral', Georgia, serif" font-size="11" fill="#7a7268" text-anchor="start">— высшее руководство</text>
+<text x="42" y="883" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#1a1612" text-anchor="start" font-weight="700">Светлый блок (цв. полоса)</text>
+<text x="218" y="883" font-family="'Spectral', Georgia, serif" font-size="11" fill="#7a7268" text-anchor="start">— функциональное подразделение</text>
+<text x="42" y="902" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#1a1612" text-anchor="start" font-weight="700">Сплошная линия</text>
+<text x="218" y="902" font-family="'Spectral', Georgia, serif" font-size="11" fill="#7a7268" text-anchor="start">— прямое административное подчинение</text>
+<text x="42" y="921" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#1a1612" text-anchor="start" font-weight="700">Пунктирная линия</text>
+<text x="218" y="921" font-family="'Spectral', Georgia, serif" font-size="11" fill="#7a7268" text-anchor="start">— функциональная / внешняя связь</text>
+<text x="42" y="940" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#1a1612" text-anchor="start" font-weight="700">АО «ШЗГ»</text>
+<text x="218" y="940" font-family="'Spectral', Georgia, serif" font-size="11" fill="#7a7268" text-anchor="start">— внешний партнёр (давальческая схема)</text>
+<text x="870" y="1040" font-family="'JetBrains Mono', monospace" font-size="10" fill="#b0a898" text-anchor="middle">Организационная структура · ООО «ШЗА» · Модель TO-BE · 2026</text>
+<line x1="624" y1="494" x2="624" y2="508" stroke="#8a5a00" stroke-width="1.5"/>
+<line x1="624" y1="508" x2="756" y2="508" stroke="#8a5a00" stroke-width="1.5"/>
+<line x1="756" y1="508" x2="756" y2="566" stroke="#8a5a00" stroke-width="1.5"/>
+<rect x="662" y="566" width="188" height="62" rx="2" fill="#f5ead0" stroke="#8a5a00" stroke-width="1.8"/>
+<rect x="662" y="566" width="188" height="4" rx="1" fill="#8a5a00"/>
+<text x="756" y="586" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#8a5a00" text-anchor="middle" font-weight="700">ТЕХНОЛОГ</text>
+<text x="756" y="602" font-family="'Spectral', Georgia, serif" font-size="12" fill="#3d3830" text-anchor="middle" font-style="italic">Подчинение КТО</text>
+<text x="756" y="618" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7a7268" text-anchor="middle">Техпроцессы · Режимы</text>
+</svg>
+  </div>
+</div>
+</div>
 </body>
 </html>
