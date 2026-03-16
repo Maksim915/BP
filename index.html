@@ -16,7 +16,7 @@
   --ink4: #b0a898;
   --rule: #c8bfb0;
   --rule2: #ddd6c8;
-  --accent: #c0440a;      
+  --accent: #c0440a;      /* сталь-оранжевый */
   --accent2: #8f3006;
   --accent-pale: #f2e0d6;
   --green: #2a6b3a;
@@ -960,6 +960,263 @@ body { padding-top: 0; }
 .struct-header { margin-bottom: 24px; border-bottom: 1px solid var(--rule); padding-bottom: 16px; display:flex; align-items:baseline; gap:16px; }
 .struct-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); }
 .struct-title { font-family: var(--serif); font-size: 28px; color: var(--ink); }
+
+  .snav-btn { min-height: 44px; }
+  .mes-vbtn { min-height: 44px; }
+  .step-row { cursor: default; }
+  .sc-transition-btn { min-height: 52px; }
+}
+
+
+/* ═══════════════════════════════════════════════════
+   MOBILE / TABLET ADAPTIVE  — non-destructive
+   PC (>1024px) untouched. Mobile-first layer only.
+═══════════════════════════════════════════════════ */
+
+/* ── Tablet 769–1024px ──────────────────────────── */
+@media (max-width: 1024px) {
+  .mes-modules { display: none; }
+}
+
+/* ── Mobile ≤768px ──────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* viewport body */
+  body { font-size: 15px; }
+
+  /* ─ MES TICKER ─ */
+  .mes-ticker-bar { height: 22px; }
+  .mes-ticker-text { font-size: 9.5px; }
+  .mes-ticker-right { gap: 10px; }
+  .mes-tag { font-size: 9px; }
+
+  /* ─ MES MAIN: 2-row stacked layout ─ */
+  .mes-main {
+    flex-wrap: wrap;
+    height: auto !important;
+    padding-bottom: 0;
+  }
+
+  /* Row 1: brand full width */
+  .mes-brand {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    padding: 10px 14px;
+    flex-shrink: 0;
+  }
+  .mes-brand-hex svg { width: 32px; height: 32px; }
+  .mes-brand-name { font-size: 14px; }
+  .mes-brand-sub { font-size: 8.5px; }
+
+  /* Row 2: KPI + OEE + statuses in a scrollable row */
+  .mes-kpis {
+    display: flex;
+    align-items: stretch;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-shrink: 0;
+    border-right: none;
+  }
+  .mes-kpis::-webkit-scrollbar { display: none; }
+  .mes-kpi { padding: 8px 14px; min-width: 56px; }
+  .mes-kpi-val { font-size: 20px; }
+  .mes-kpi-lbl { font-size: 8px; }
+
+  .mes-oee { padding: 6px 12px; }
+  .mes-oee-ring { width: 30px; height: 30px; }
+  .mes-oee-ring svg { width: 30px; height: 30px; }
+  .mes-oee-num { font-size: 7.5px; }
+  .mes-oee-lbl { font-size: 7.5px; margin-top: 1px; }
+
+  .mes-statuses {
+    padding: 6px 12px;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .mes-status-row { font-size: 9.5px; gap: 5px; }
+  .mes-led { width: 6px; height: 6px; }
+  .mes-status-val { font-size: 9.5px; }
+  .mes-modules { display: none; }
+
+  /* Row 3: view buttons — full width, all visible */
+  .mes-view-btns {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,.07);
+    display: flex;
+  }
+  .mes-vbtn {
+    flex: 1;
+    padding: 0 6px;
+    font-size: 10.5px;
+    letter-spacing: .02em;
+    height: 40px;
+    justify-content: center;
+    gap: 5px;
+    min-width: 0;
+    white-space: nowrap;
+  }
+  .mes-vbtn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+  /* ─ ERP BREADCRUMB ─ */
+  .erp-breadcrumb-bar {
+    height: auto;
+    padding: 7px 12px;
+    flex-wrap: wrap;
+    gap: 3px 5px;
+    line-height: 1.5;
+  }
+  .erp-bc-logo { margin-bottom: 2px; }
+  .erp-bc-sysname { font-size: 10px; }
+  .erp-bc-crumb { font-size: 10px; }
+  .erp-bc-sep { font-size: 10px; }
+
+  /* ─ BPMN / STRUCT scroll areas ─ */
+  .bpmn-scroll,
+  .struct-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+  }
+  .bpmn-scroll:active,
+  .struct-scroll:active { cursor: grabbing; }
+
+  /* Pinch-zoom container */
+  .zoom-wrap {
+    transform-origin: top left;
+    will-change: transform;
+    display: inline-block;
+    min-width: 100%;
+  }
+
+  /* Hint label under diagrams */
+  .scroll-hint {
+    display: block;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink4);
+    padding: 8px 0 0;
+    letter-spacing: .07em;
+  }
+
+  /* ─ BPMN VIEW header ─ */
+  .bpmn-wrap { padding: 14px 12px 0; }
+  .bpmn-header {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .bpmn-meta { font-size: 10.5px; }
+  .bpmn-legend {
+    display: flex;
+    gap: 8px 14px;
+    flex-wrap: wrap;
+  }
+  .leg-item { font-size: 10.5px; }
+
+  /* ─ STEP VIEW ─ */
+  .step-view { padding: 18px 14px 50px; max-width: 100%; }
+
+  .sc-nav {
+    gap: 0;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+  .sc-nav::-webkit-scrollbar { display: none; }
+  .sc-btn {
+    font-size: 10px;
+    padding: 10px 12px 9px;
+    letter-spacing: .04em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .sc-header {
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 18px;
+  }
+  .sc-num { font-size: 48px; line-height: 1; }
+  .sc-title { font-size: 22px; line-height: 1.25; }
+  .sc-logic { font-size: 14px; line-height: 1.65; }
+
+  .sc-progress { margin-bottom: 16px; }
+
+  .step-row { gap: 10px; padding: 14px 0; }
+  .step-num {
+    width: 30px; height: 30px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .step-title { font-size: 15px; }
+  .step-tag { font-size: 9px; padding: 3px 8px; }
+
+  .step-body { padding: 14px 0 0 40px; }
+  .step-what { font-size: 14px; line-height: 1.75; margin-bottom: 12px; }
+  .step-why { padding: 12px 14px; }
+  .step-why-lbl { font-size: 9.5px; margin-bottom: 6px; }
+  .step-why-txt { font-size: 13px; line-height: 1.65; }
+
+  .actors { gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .actor { font-size: 11.5px; padding: 6px 12px; }
+
+  .snav {
+    display: flex;
+    gap: 8px;
+    padding-top: 18px;
+    padding-bottom: 8px;
+  }
+  .snav-btn {
+    flex: 1;
+    font-size: 12px;
+    padding: 13px 10px;
+    text-align: center;
+    min-height: 46px;
+  }
+  .snav-btn-primary { flex: 1.4; }
+
+  /* ─ STRUCT VIEW ─ */
+  .struct-view { padding: 14px 12px 40px; }
+  .struct-header {
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+  }
+  .struct-title { font-size: 20px; }
+  .struct-eyebrow { font-size: 10px; }
+
+  /* ─ FOOTER ─ */
+  .footer {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+  .footer-l { font-size: 15px; }
+  .footer-r { font-size: 10.5px; text-align: left; line-height: 1.9; }
+
+  /* ─ TRANSITION OVERLAY ─ */
+  .sc-transition-card { padding: 28px 20px; max-width: 95vw; }
+  .sc-transition-title { font-size: 20px; }
+  .sc-transition-sub { font-size: 13px; }
+  .sc-transition-btn { font-size: 12px; padding: 14px 16px; min-height: 50px; }
+  .sc-transition-skip { font-size: 11px; }
+
+  /* ─ TOUCH TAP TARGETS ─ */
+  .sc-btn,
+  .snav-btn,
+  .mes-vbtn {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2425,5 +2682,77 @@ for (let i = 0; i < 7; i++) { buildProgress(i); renderSteps(i); updateNextBtn(i)
   </div>
 </div>
 </div>
+
+<script>
+
+/* ── PINCH-TO-ZOOM for BPMN and Struct diagrams ── */
+(function() {
+  function addZoom(scrollEl) {
+    var el = scrollEl.querySelector('svg, .zoom-wrap');
+    if (!el) return;
+
+    // Wrap SVG in zoom-wrap div if not already
+    if (!el.classList.contains('zoom-wrap')) {
+      var wrap = document.createElement('div');
+      wrap.className = 'zoom-wrap';
+      el.parentNode.insertBefore(wrap, el);
+      wrap.appendChild(el);
+      el = wrap;
+    }
+
+    var scale = 1, lastDist = 0, startScale = 1;
+    var MIN = 0.5, MAX = 4;
+
+    function getDist(touches) {
+      var dx = touches[0].clientX - touches[1].clientX;
+      var dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx*dx + dy*dy);
+    }
+
+    scrollEl.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        lastDist = getDist(e.touches);
+        startScale = scale;
+      }
+    }, { passive: false });
+
+    scrollEl.addEventListener('touchmove', function(e) {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        var dist = getDist(e.touches);
+        scale = Math.min(MAX, Math.max(MIN, startScale * (dist / lastDist)));
+        el.style.transform = 'scale(' + scale + ')';
+        el.style.transformOrigin = 'top left';
+      }
+    }, { passive: false });
+
+    // Double-tap to reset
+    var lastTap = 0;
+    scrollEl.addEventListener('touchend', function(e) {
+      var now = Date.now();
+      if (now - lastTap < 300) {
+        scale = 1;
+        el.style.transform = 'scale(1)';
+      }
+      lastTap = now;
+    });
+  }
+
+  function initZoom() {
+    var bpmnScroll = document.querySelector('.bpmn-scroll');
+    var structScroll = document.querySelector('.struct-scroll');
+    if (bpmnScroll) addZoom(bpmnScroll);
+    if (structScroll) addZoom(structScroll);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initZoom);
+  } else {
+    initZoom();
+  }
+})();
+
+</script>
 </body>
 </html>
